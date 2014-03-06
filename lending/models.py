@@ -32,6 +32,7 @@ class BookItem(models.Model):
 
     class Meta:
       unique_together = ("book","item_id")
+      ordering = ['book']
 
 
 class Lending(models.Model):
