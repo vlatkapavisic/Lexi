@@ -14,6 +14,7 @@ class User(models.Model):
 class BookItem(models.Model):
     book = models.ForeignKey(library.models.Book)
     borrowed = models.BooleanField(default=False)
+    item_id = models.IntegerField(default=1)
 
     def __unicode__(self):
       return self.book.title
@@ -28,6 +29,9 @@ class BookItem(models.Model):
         return ""
 
     get_borrower.short_description = 'borrowed by'
+
+    class Meta:
+      unique_together = ("book","item_id")
 
 
 class Lending(models.Model):
