@@ -1,80 +1,129 @@
+# -*- coding: utf-8 -*-
+
+from django.core.urlresolvers import reverse
 from django.db import models
-import lending
+from django.utils.translation import ugettext as _
+
+
+__all__ = ('Author', 'Publisher', 'Category', 'Tag', 'Book')
 
 class Author(models.Model):
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
-
-    def full_name(self):
-    	return self.first_name + " " + self.last_name
-
-    def __unicode__(self):
-    	return self.full_name()
-
-class Publisher(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __unicode__(self):
-    	return self.name
-
-class Category(models.Model):
-	# kategorije mogu biti npr. "Programiranje", "Project management" i sl. 
-    name = models.CharField(max_length=20)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    name = models.CharField(blank=True, max_length=100)
 
     class Meta:
-    	verbose_name_plural = "categories"
+        verbose_name = _(u"author")
+        verbose_name_plural = _(u"authors")
+        ordering = ['last_name']
 
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('author', args=[self.id]) 
+
+    def save(self, *args, **kwargs):
+        self.name = self.first_name+" "+self.last_name
+        super(Author, self).save(*args, **kwargs)
+
+    def full_name(self):
+    	return self.name
+
+    
+class Publisher(models.Model):
+    name = models.CharField(max_length=200)
+
+    class Meta:
+        verbose_name = _(u"publisher")
+        verbose_name_plural = _(u"publishers")
+        ordering = ['name']
+            
     def __unicode__(self):
     	return self.name
 
-class Tag(models.Model):
-	# tagovi mogu biti npr. "Python", "CSS", "Photoshop", odnosno, konkretniji su od kategorije 
+    def get_absolute_url(self):
+        return reverse('publisher', args=[self.id])
+        
+
+class Category(models.Model): 
     name = models.CharField(max_length=50)
 
+    class Meta:
+        verbose_name = _(u"category")
+    	verbose_name_plural = _(u"categories")
+        ordering = ['name']
+
     def __unicode__(self):
     	return self.name
 
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = _(u"tag")
+        verbose_name_plural = _(u"tags")
+        ordering = ['name']
+
+    def __unicode__(self):
+    	return self.name
+
+
 class Book(models.Model):
-    LANGUAGE_CHOICES = (('hr','Croatian'),('eng','English'),('ger','German'))
-    title = models.CharField(max_length=50)
-    description = models.CharField(max_length=200, blank=True)
+    LANGUAGE_CHOICES = (
+        ('hr-HR',_(u'Croatian')),
+        ('en-US',_(u'English')),
+        ('de-DE',_(u'German')),
+    )
+    title = models.CharField(_(u"title"), max_length=200)
+    description = models.CharField(_(u"description"), max_length=1000, blank=True)
     isbn = models.CharField(max_length=24)
-    authors = models.ManyToManyField(Author)
-    publisher = models.ForeignKey(Publisher)
-    publication_year = models.IntegerField()
-    cover_image = models.ImageField(upload_to='cover_images', blank=True)
-    tags = models.ManyToManyField(Tag, blank=True)
-    language = models.CharField(max_length=3, choices=LANGUAGE_CHOICES)
-    category = models.ForeignKey(Category)
+    authors = models.ManyToManyField(Author, verbose_name=_(u"authors"), related_name="books")
+    publisher = models.ForeignKey(Publisher, verbose_name=_(u"publisher"), related_name="books")
+    publication_year = models.IntegerField(verbose_name=_(u"publication year"))
+    cover_image = models.ImageField(upload_to='cover_images', blank=True, verbose_name=_(u"cover image"))
+    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_(u"tags"), related_name="books")
+    language = models.CharField(max_length=5, choices=LANGUAGE_CHOICES, verbose_name=_(u"language"))
+    category = models.ForeignKey(Category, verbose_name=_(u"category"), related_name="books")
+
+    class Meta:
+        verbose_name = _(u"book")
+        verbose_name_plural = _(u"books")
+        ordering = ['title']
 
     def __unicode__(self):
     	return self.title
 
-    def get_authors(self):
-    	l = ""
-    	for author in self.authors.all():
-    		l += author.full_name()+", "
-    	return l[:-2] 
+    def get_absolute_url(self):
+        return reverse('book', args=[self.pk])
 
-    get_authors.short_description = 'authors'
+    def get_authors(self):
+        return ", ".join([a.name for a in self.authors.all()]) 
+
+    get_authors.short_description = _(u"authors")
 
     def get_tags(self):
-    	l = ""
-    	for tag in self.tags.all():
-    		l += tag.name +", "
-    	return l[:-2]
+        return ", ".join([tag.name for tag in self.tags.all()])
 
-    get_tags.short_description = 'tags'
+    get_tags.short_description = _(u"tags")
 
     def get_number_of_book_items(self):
-    	return lending.models.BookItem.objects.all().filter(book=self).count()
+        from lending.models import BookItem
+    	return BookItem.objects.all().filter(book=self).count()
 
-    get_number_of_book_items.short_description = 'total'
+    get_number_of_book_items.short_description = _(u"total")
 
     def get_number_of_borrowed_book_items(self):
-    	return lending.models.BookItem.objects.all().filter(book=self, borrowed=True).count()
+        from lending.models import BookItem
+    	return BookItem.objects.all().filter(book=self, borrowed=True).count()
 
-    get_number_of_borrowed_book_items.short_description = 'borrowed'
+    get_number_of_borrowed_book_items.short_description = _(u"borrowed")
 
+    def get_number_of_available_book_items(self):
+        from lending.models import BookItem
+        return BookItem.objects.all().filter(book=self, borrowed=False).count()
+
+    get_number_of_available_book_items.short_description = _(u"available")
 
 

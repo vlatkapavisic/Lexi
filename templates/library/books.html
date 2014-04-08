@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load library_extras %}
+{% block page_title %}{% trans "Books" %}{% endblock %}
+{% block title %}{% trans "Books" %}{% endblock %}
+{% block main_container %}
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#books" data-toggle="tab">{% trans "Books" %}</a></li>
+        <li><a href="#advanced-search" data-toggle="tab">{% trans "Advanced search" %}</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="books">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="sr-only" for="search">{% trans "Book title" %}</label>
+                            <input type="text" class="form-control" id="search" name="search" 
+                            {% if search_performed %}value="{{ search_term }}"{% else %}placeholder="Enter search term"{% endif %}>
+                        </div>
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                    </p>
+                </div>
+            </div>
+            {% book_list object_list search_performed %}
+            {% if is_paginated %}
+                <div class="row">
+                    <div class="col-md-12">
+                        {% pagination page_obj queries %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="tab-pane fade" id="advanced-search">
+            <p></p>
+            {% search request.GET %}
+        </div>
+    </div>  
+{% endblock %}

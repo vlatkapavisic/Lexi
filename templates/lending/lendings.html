@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load library_extras %}
+{% block page_title %}{% trans "Lendings" %}{% endblock %}
+{% block title %}{% trans "Lendings" %}{% endblock %}
+{% block main_container %}
+    <ul>
+        {% for lending in object_list %}
+            <li>{{ lending.book_item }} {{ lending.user }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

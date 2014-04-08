@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load thumbnail %}
+{% load library_extras %}
+{% block page_title %}{{ object.title }}{% endblock %}
+{% block title %}{{ object.title }}{% endblock %}
+{% block main_container %}
+    <div class="row">
+        <div class="col-md-4">
+            {% if object.cover_image %}
+                {% thumbnail object.cover_image "260" crop="center" as im %}
+                    <img src="{{ im.url }}"/>
+                {% endthumbnail %}
+            {% else %}
+                <img src="{% static 'images/noimage.jpg' %}" width="260"/>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            {% if object.description %}
+                <div class="panel panel-default">
+                    <div class="panel-body text-muted">
+                        {{ object.description }}
+                    </div>
+                </div>
+            {% endif %}
+            {% trans "Tags" %}:
+            {% for tag in object.tags.all %}
+                <span class="label label-default">{{ tag.name }}</span>
+            {% endfor %}<p></p>
+            <p>{% trans "Publication year" %}: {{ object.publication_year}}</p>
+            {% if object.authors.all.count > 1 %}
+                <p>{% trans "Authors" %}:
+            {% else %}
+                <p>{% trans "Author" %}:
+            {% endif %}
+            {% spaceless %}
+                {% for author in book.authors.all %}
+                    <a href="{{ author.get_absolute_url }}">{{ author.full_name }}</a>
+                    {% if not forloop.last %}<span>, </span>{% endif %}
+                {% endfor %}
+            {% endspaceless %}</p>
+            <p>{% trans "Publisher" %}: <a href="{{ object.publisher.get_absolute_url }}">{{ object.publisher }}</a></p>
+            <p>ISBN: {{ object.isbn }}</p>
+            <p>{% trans "Language" %}: {{ object.get_language_display }}</p>
+            <p>{% trans "Category" %}: {{ object.category }}</p>
+            <p>{% trans "Number of copies" %}: {{ object.get_number_of_book_items }}</p>
+            <p>{% trans "Number of available copies" %}: {{ object.get_number_of_available_book_items }}</p>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load library_extras %}
+{% load static %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% block page_title %}{{ publisher.full_name }}{% endblock %}
+{% block title %}{{ publisher.name }}{% endblock %}
+{% block main_container %}
+    <h4>{% trans "Books by this publisher" %}:</h4>
+    <p></p>
+    {% book_list object_list %}
+    {% if is_paginated %}
+        <div class="row">
+            <div class="col-md-12">
+                {% pagination page_obj queries %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
