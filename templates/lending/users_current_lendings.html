@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load library_extras %}
+{% load static %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% block page_title %}{{ username }}{% trans "'s current lendings" %}{% endblock %}
+{% block title %}{{ username }}{% trans "'s current lendings" %}{% endblock %}
+{% block main_container %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>{% trans "Book item" %}</th>
+                <th>{% trans "Start date" %}</th>
+                <th>{% trans "End date" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lending in object_list %}
+            <tr>
+                <td>{{ lending.book_item }}</td>
+                <td>{{ lending.start_date }}</td>
+                <td>{{ lending.end_date }}</td>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-info"><a href="{% url 'users-lendings' username %}">{% trans "All lendings" %}</a></button>
+            {% if is_paginated %}
+                {% pagination page_obj queries %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

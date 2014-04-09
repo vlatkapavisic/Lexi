@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load library_extras %}
+{% block page_title %}{% trans "New lending" %}{% endblock %}
+{% block title %}{% trans "New lending" %}: {{ book.title }}{% endblock %}
+{% block main_container %}
+    <form action="" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Create" />
+    </form>
+{% endblock %}

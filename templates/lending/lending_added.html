@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load library_extras %}
+{% block page_title %}{% trans "Lendings" %}{% endblock %}
+{% block title %}{% trans "Lendings" %}{% endblock %}
+{% block main_container %}
+    Book "{{ book_title }}" has been lended to <a href="{% url 'users-lendings' username %}">{{ username }}</a>.
+{% endblock %}
