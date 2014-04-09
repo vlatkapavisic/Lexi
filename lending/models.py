@@ -2,8 +2,11 @@
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 from library.models import Book
+from django.utils import timezone
 
 
 __all__ = ('BookItem', 'Lending')
@@ -25,22 +28,28 @@ class BookItem(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is None:  #prvo spremanje, novi objekt
-          try:
-             latest_item = BookItem.objects.filter(book=self.book).order_by('-item_id')[0]
-             self.item_id = latest_item.item_id + 1
-          except IndexError:
-             self.item_id = 1
+            try:
+                latest_item = BookItem.objects.filter(book=self.book).order_by('-item_id')[0]
+                self.item_id = latest_item.item_id + 1
+            except IndexError:
+                self.item_id = 1
         super(BookItem, self).save(*args, **kwargs)
+
+    @receiver(pre_delete, sender='Lending')
+    def unborrow(sender, instance, using, **kwargs):
+        print instance
+        lending.book_item.borrowed = False
+        lending.book_item.save()
 
     def book_title(self):
         return self.book.title
 
     def get_borrower(self):
         if self.borrowed:
-          u = Lending.objects.get(book_item=self).user
-          return u"{0} {1}".format(u.first_name, u.last_name)
+            u = Lending.objects.get(book_item=self).user
+            return u"{0} {1}".format(u.first_name, u.last_name)
         else:
-          return u""
+            return u""
 
     get_borrower.short_description = _(u'borrowed by')
 
@@ -61,9 +70,9 @@ class Lending(models.Model):
 
     def save(self, *args, **kwargs):
         if self.end_date:
-          self.book_item.borrowed = False
+            self.book_item.borrowed = False
         else:
-          self.book_item.borrowed = True
+            self.book_item.borrowed = True
         self.book_item.save()
         super(Lending, self).save(*args, **kwargs)
       
@@ -71,10 +80,5 @@ class Lending(models.Model):
         return self.book_item.book_title()
 
     def user_name(self):
-        return u"{0} {1}".format(self.user.first_name, self.user.last_name)
+        return self.user.username
    
-    
-
-   
-
-
