@@ -48,6 +48,11 @@ coverage.xml
 # Django stuff:
 *.log
 *.pot
+media/
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+/db/*.sqlite3-journal
 
 # Sphinx documentation
 docs/_build/
