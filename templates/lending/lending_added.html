@@ -7,5 +7,7 @@
 {% block page_title %}{% trans "Lendings" %}{% endblock %}
 {% block title %}{% trans "Lendings" %}{% endblock %}
 {% block main_container %}
-    Book "{{ book_title }}" has been lended to <a href="{% url 'users-lendings' username %}">{{ username }}</a>.
+    <div class="alert alert-info">
+        {% trans "Book" %} "{{ book_title }}" {% trans "has been lended to" %} <a href="{% url 'users-current-lendings' username %}">{{ username }}</a>.
+    </div>
 {% endblock %}

@@ -27,13 +27,6 @@ class LendingAdmin(admin.ModelAdmin):
 	list_display = ('book_item','user_name','start_date','end_date')
 	form = LendingAdminForm
 
-	# def delete_model(self, request, obj):
-	# 	book_item = obj.book_item
-	# 	book_item.borrowed = False
-	# 	book_item.save()
-	# 	super(LendingAdmin, self).delete_model(request, obj)
-
-
 
 admin.site.register(BookItem, BookItemAdmin)
 admin.site.register(Lending, LendingAdmin)

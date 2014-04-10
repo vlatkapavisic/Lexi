@@ -7,9 +7,15 @@
 {% block page_title %}{% trans "Users" %}{% endblock %}
 {% block title %}{% trans "Users" %}{% endblock %}
 {% block main_container %}
-    <ul>
-        {% for user in object_list %}
-            <li><a href="{% url 'users-current-lendings' user.username %}">{{ user.username }}</li>
-        {% endfor %}
-    </ul>
+    <div class="row">
+        <div class="col-md-3">
+            <table class="table table-hover">
+                <tbody>
+                    {% for user in object_list %}
+                        <tr><td><a href="{% url 'users-current-lendings' user.username %}">{{ user.username }}</a></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

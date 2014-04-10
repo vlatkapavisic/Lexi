@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404

@@ -35,21 +35,15 @@ class BookItem(models.Model):
                 self.item_id = 1
         super(BookItem, self).save(*args, **kwargs)
 
-    @receiver(pre_delete, sender='Lending')
-    def unborrow(sender, instance, using, **kwargs):
-        print instance
-        lending.book_item.borrowed = False
-        lending.book_item.save()
-
     def book_title(self):
         return self.book.title
 
     def get_borrower(self):
         if self.borrowed:
-            u = Lending.objects.get(book_item=self).user
-            return u"{0} {1}".format(u.first_name, u.last_name)
+            u = Lending.objects.filter(book_item=self).first().user
+            return u.username
         else:
-            return u""
+            return ""
 
     get_borrower.short_description = _(u'borrowed by')
 
@@ -77,8 +71,14 @@ class Lending(models.Model):
         super(Lending, self).save(*args, **kwargs)
       
     def book_title(self):
-        return self.book_item.book_title()
+        return self.book_item.book.title
 
     def user_name(self):
         return self.user.username
    
+
+@receiver(pre_delete, sender=Lending)
+def unborrow(sender, **kwargs):
+    lending = kwargs['instance']
+    lending.book_item.borrowed = False
+    lending.book_item.save()

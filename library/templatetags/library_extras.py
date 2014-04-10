@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django import template
 from django.template.defaultfilters import stringfilter
 from library.forms import BookSearchForm
@@ -44,4 +46,8 @@ def century(year):
         return 20
     else:
         return 21
+
+@register.inclusion_tag('lending_list.html')
+def lending_list(object_list):
+    return { 'object_list': object_list }
 
