@@ -37,7 +37,7 @@
                         <td>
                             {% spaceless %}
                                 {% for author in book.authors.all %}
-                                    <a href="{{ author.get_absolute_url }}">{{ author.full_name }}</a>
+                                    <a href="{{ author.get_absolute_url }}">{{ author.name }}</a>
                                     {% if not forloop.last %}<span>, </span>{% endif %}
                                 {% endfor %}
                             {% endspaceless %}

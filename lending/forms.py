@@ -2,19 +2,20 @@
 
 from django.forms import ModelForm, DateInput
 from django.forms.extras.widgets import SelectDateWidget, Select
-from lending.models import Lending, BookItem
-from datetime import date
 from django.utils import timezone
 from django.utils.translation import ugettext as _
+from datetime import date
+from lending.models import Lending, BookItem
+
 
 class AddLendingForm(ModelForm):
     class Meta:
         model = Lending
         fields = ['user', 'book_item', 'start_date']
         widgets = {
-            'user' : Select(attrs={'class':'form-control',}),
-            'book_item' : Select(attrs={'class':'form-control',}),
-            'start_date': SelectDateWidget(attrs={'class':'form-control','style':'display:inline'})
+            'user' : Select(attrs={'class':'form-control'}),
+            'book_item' : Select(attrs={'class':'form-control'}),
+            'start_date': SelectDateWidget(attrs={'class':'form-control'})
         }
 
     def __init__(self, book, *args, **kwargs):

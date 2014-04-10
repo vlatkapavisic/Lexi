@@ -5,8 +5,8 @@ from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
-from library.models import Book
 from django.utils import timezone
+from library.models import Book
 
 
 __all__ = ('BookItem', 'Lending')
@@ -29,7 +29,7 @@ class BookItem(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is None:  #prvo spremanje, novi objekt
             try:
-                latest_item = BookItem.objects.filter(book=self.book).order_by('-item_id')[0]
+                latest_item = BookItem.objects.filter(book=self.book).order_by('-item_id').first()
                 self.item_id = latest_item.item_id + 1
             except IndexError:
                 self.item_id = 1
@@ -40,8 +40,7 @@ class BookItem(models.Model):
 
     def get_borrower(self):
         if self.borrowed:
-            u = Lending.objects.filter(book_item=self).first().user
-            return u.username
+            return Lending.objects.filter(book_item=self).first().user.username
         else:
             return ""
 
@@ -78,7 +77,7 @@ class Lending(models.Model):
    
 
 @receiver(pre_delete, sender=Lending)
-def unborrow(sender, **kwargs):
+def lending_ended(sender, **kwargs):
     lending = kwargs['instance']
     lending.book_item.borrowed = False
     lending.book_item.save()

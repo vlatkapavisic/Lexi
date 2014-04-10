@@ -14,10 +14,8 @@
                     <form role="form" action="" method="post">{% csrf_token %}
                         {% for bound_field in form %}
                             <div class="form-group">
-                                {% if forloop.last %}<fieldset style="display:inline">{% endif %}
                                 {{ bound_field.label_tag }}
                                 {{ bound_field }}
-                                {% if forloop.last %}</fieldset>{% endif %}
                             </div>
                         {% endfor %}
                         <button type="submit" class="btn btn-default pull-right">{% trans "Lend" %}</button>

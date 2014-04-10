@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
+from django.utils.translation import ugettext as _
 from library.models import Book
 from datetime import date
-from django.utils.translation import ugettext as _
 
 
 class BookSearchForm(forms.Form):
