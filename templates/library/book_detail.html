@@ -47,7 +47,7 @@
             <p>{% trans "Category" %}: {{ object.category }}</p>
             <p>{% trans "Number of copies" %}: {{ object.get_number_of_book_items }}</p>
             <p>{% trans "Number of available copies" %}: {{ object.get_number_of_available_book_items }}</p>
-            <p><button type="button" class="btn btn-default" {% if object.get_number_of_available_book_items = 0 %}disabled="disabled"{% endif %}><a href="{% url 'new-lending' object.id %}">Lend</a></button></p>
+            <p><button type="button" class="btn btn-default" {% if object.get_number_of_available_book_items = 0 %}disabled="disabled"{% endif %}><a href="{% url 'add-lending' object.id %}">Lend</a></button></p>
         </div>
     </div>
 {% endblock %}

@@ -48,10 +48,10 @@
                             <span class="badge">{{ book.get_number_of_available_book_items }}</span> -->
                             <div class="progress progress-striped">
                                 <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{% percentage book.get_number_of_available_book_items book.book_items.all.count %}" aria-valuemin="0" aria-valuemax="100" style="width: {% percentage book.get_number_of_available_book_items book.book_items.all.count %}%">
-                                    {% percentage book.get_number_of_available_book_items book.book_items.all.count %}%
+                                    {% percentage book.get_number_of_available_book_items book.book_items.all.count %}% 
                                 </div>
                             </div>
-                            <!-- {{ book.get_number_of_available_book_items }} {% trans "out of" %} {{ book.book_items.all.count }} -->
+                            <!--{{ book.get_number_of_available_book_items }} / {{ book.book_items.all.count }}-->
                         </td>
                     </tr>
                     {% endfor %}

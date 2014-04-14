@@ -4,13 +4,13 @@
 {% load static %}
 {% load staticfiles %}
 {% load thumbnail %}
-{% block page_title %}{{ username }}{% trans "'s current lendings" %}{% endblock %}
-{% block title %}{{ username }}{% trans "'s current lendings" %}{% endblock %}
+{% block page_title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s current lendings" %}{% endblock %}
+{% block title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s current lendings" %}{% endblock %}
 {% block main_container %}
     {% lending_list object_list %}
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-info"><a href="{% url 'users-lendings' username %}">{% trans "All lendings" %}</a></button>
+            <button type="button" class="btn btn-info"><a href="{% url 'users-lendings' lender.username %}">{% trans "All lendings" %}</a></button>
             {% if is_paginated %}
                 {% pagination page_obj queries %}
             {% endif %}

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import pre_delete
@@ -14,7 +15,7 @@ __all__ = ('BookItem', 'Lending')
 
 class BookItem(models.Model):
     book = models.ForeignKey(Book, verbose_name=_(u"book"), related_name="book_items")
-    borrowed = models.BooleanField(default=False, verbose_name=_(u"borrowed"))
+    borrowed = models.BooleanField(default=False, editable=False, verbose_name=_(u"borrowed"))
     item_id = models.IntegerField(verbose_name=_(u"item ID"))
 
     class Meta:
@@ -68,6 +69,9 @@ class Lending(models.Model):
             self.book_item.borrowed = True
         self.book_item.save()
         super(Lending, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('lending', args=[self.id])
       
     def book_title(self):
         return self.book_item.book.title

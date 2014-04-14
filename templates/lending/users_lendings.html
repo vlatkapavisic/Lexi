@@ -4,8 +4,8 @@
 {% load static %}
 {% load staticfiles %}
 {% load thumbnail %}
-{% block page_title %}{{ username }}{% trans "'s lendings" %}{% endblock %}
-{% block title %}{{ username }}{% trans "'s lendings" %}{% endblock %}
+{% block page_title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s lendings" %}{% endblock %}
+{% block title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s lendings" %}{% endblock %}
 {% block main_container %}
     {% lending_list object_list %}
     {% if is_paginated %}

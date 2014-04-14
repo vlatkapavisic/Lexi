@@ -16,15 +16,25 @@
                         <th>{% trans "User" %}</th>
                         <th>{% trans "Start date" %}</th>
                         <th>{% trans "End date" %}</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for lending in object_list %}
                     <tr>
-                        <td>{{ lending.book_item }}</td>
-                        <td>{{ lending.user_name }}</td>
+                        <td><a href="{% url 'view-lending' lending.id %}">
+                        {{ lending.book_item }}</a></td>
+                        <td><a href="{% url 'users-current-lendings' lending.user.username %}">{{ lending.user.first_name }} {{ lending.user.last_name }}</a></td>
                         <td>{{ lending.start_date }}</td>
                         <td>{{ lending.end_date }}</td>
+                        <td><button type="button" class="btn btn-default">
+                        <a href="{% url 'edit-lending' lending.id %}">
+                        {% trans "Edit" %}</a></button></td>
+                        <td><button type="button" class="btn btn-default"
+                        {% if lending.end_date != None %}disabled="disabled"{% endif %}>
+                        <a href="{% url 'finish-lending' lending.id %}">
+                        {% trans "Finish lending" %}</a></button></td>
                     {% endfor %}
                 </tbody>
             </table>

@@ -3,11 +3,12 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.views.generic import ListView, View, TemplateView, CreateView
+from django.views.generic import ListView, View, TemplateView, CreateView, \
+                                UpdateView
 from django.views.generic.detail import DetailView
 from lending.models import *
 from library.models import *
-from lending.forms import AddLendingForm
+from lending.forms import AddLendingForm, FinishLendingForm, EditLendingForm
 
 
 
@@ -18,24 +19,47 @@ class LendingList(ListView):
     queryset = Lending.objects.order_by('-id')
 
 
-class NewLending(CreateView):
+class AddLending(CreateView):
     model = Lending
-    template_name = 'lending/new_lending.html'
+    template_name = 'lending/add_lending.html'
     form_class = AddLendingForm
 
     def get_success_url(self):
         return reverse('lending-added', args=[self.object.id])
 
     def get_form_kwargs(self):
-        kwargs = super(NewLending, self).get_form_kwargs()
+        kwargs = super(AddLending, self).get_form_kwargs()
         self.book = Book.objects.get(pk=self.kwargs['book_pk'])
         kwargs['book'] = self.book
         return kwargs
 
     def get_context_data(self, **kwargs):
-        context = super(NewLending, self).get_context_data(**kwargs)
+        context = super(AddLending, self).get_context_data(**kwargs)
         context['book'] = self.book
         return context
+
+
+class ViewLending(DetailView):
+    model = Lending
+    template_name = 'lending/view_lending.html'
+
+
+class FinishLending(UpdateView):
+    model = Lending
+    template_name = 'lending/finish_lending.html'
+    form_class = FinishLendingForm
+
+    def get_success_url(self):
+        return reverse('view-lending', args=[self.object.id])
+
+
+class EditLending(UpdateView):
+    model = Lending
+    template_name = 'lending/edit_lending.html'
+    form_class = EditLendingForm
+
+    def get_success_url(self):
+        return reverse('view-lending', args=[self.object.id])
 
 
 class LendingAdded(TemplateView):
@@ -52,7 +76,7 @@ class LendingAdded(TemplateView):
 class UsersCurrentLendings(ListView):
     model = Lending
     template_name = "lending/users_current_lendings.html"
-    paginate_by = 3
+    paginate_by = 5
 
     def get_queryset(self):
         self.user = User.objects.get(username=self.kwargs['username'])
@@ -60,14 +84,14 @@ class UsersCurrentLendings(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(UsersCurrentLendings, self).get_context_data(**kwargs)
-        context['username'] = self.user.username
+        context['lender'] = self.user
         return context
 
 
 class UsersLendings(ListView):
     model = Lending
     template_name = "lending/users_lendings.html"
-    paginate_by = 10
+    paginate_by = 5
 
     def get_queryset(self):
         self.user = User.objects.get(username=self.kwargs['username']) 
@@ -75,7 +99,7 @@ class UsersLendings(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(UsersLendings, self).get_context_data(**kwargs)
-        context['username'] = self.user.username
+        context['lender'] = self.user
         return context
 
 
@@ -83,6 +107,9 @@ class UsersList(ListView):
     model = User
     template_name = "lending/users.html"
     paginate_by = 10
-    queryset = User.objects.order_by('username')
+    queryset = User.objects.order_by('last_name')
+
+
+
 
 
