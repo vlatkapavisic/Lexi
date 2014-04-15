@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load library_extras %}
+{% block page_title %}{% trans "Readme" %}{% endblock %}
+{% block title %}{% trans "Readme" %}{% endblock %}
+{% block main_container %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{% trans "About Lexi" %}</h3>
+                </div>
+                <div class="panel-body">
+                    {% blocktrans %}Lexi is an app developed with Django 1.6. It's using 
+                    SQLite database, South for migrations and Pillow for images.{% endblocktrans %}
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{% trans "How to use Lexi" %}</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">{% blocktrans %}To add a new lending, 
+                            go to the desired book's page and click 'Lend'.{% endblocktrans %}</li>
+                        <li class="list-group-item">Second advice</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

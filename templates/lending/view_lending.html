@@ -4,17 +4,17 @@
 {% load staticfiles %}
 {% load thumbnail %}
 {% load library_extras %}
-{% block page_title %}{{ object.book_title }}{% endblock %}
-{% block title %}{{ object.book_item }}{% endblock %}
+{% block page_title %}{% trans "Lending" %}: {{ object.book_title }}{% endblock %}
+{% block title %}{% trans "Lending" %} <small>{{ object.book_item }}</small>{% endblock %}
 {% block main_container %}
-<p>{% trans "User" %}: <a href="{% url 'users-current-lendings' object.user.username %}">{{ object.user.first_name }} {{ object.user.last_name }}</a></p>
-<p>{% trans "Start date" %}: {{ object.start_date }}</p>
-<p>{% trans "End date" %}: {{ object.end_date }}</p>
-<button type="button" class="btn btn-default">
-    <a href="{% url 'edit-lending' lending.id %}">
-    {% trans "Edit" %}</a></button>
-<button type="button" class="btn btn-default"
-    {% if object.end_date != None %}disabled="disabled"{% endif %}>
-    <a href="{% url 'finish-lending' lending.id %}">
-    {% trans "Finish lending" %}</a></button>
+    <p>{% trans "User" %}: <a href="{% url 'users-current-lendings' object.user.username %}">{{ object.user.first_name }} {{ object.user.last_name }}</a></p>
+    <p>{% trans "Start date" %}: {{ object.start_date }}</p>
+    <p>{% trans "End date" %}: {{ object.end_date }}</p>
+    <button type="button" class="btn btn-default">
+        <a href="{% url 'edit-lending' lending.id %}">
+        {% trans "Edit" %}</a></button>
+    <button type="button" class="btn btn-default"
+        {% if object.end_date != None %}disabled="disabled"{% endif %}>
+        <a href="{% url 'finish-lending' lending.id %}">
+        {% trans "Finish lending" %}</a></button>
 {% endblock %}

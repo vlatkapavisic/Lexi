@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils import timezone
@@ -15,8 +16,29 @@ from lending.forms import AddLendingForm, FinishLendingForm, EditLendingForm
 class LendingList(ListView):
     model = Lending
     template_name = 'lending/lendings.html'
-    paginate_by = 10
-    queryset = Lending.objects.order_by('-id')
+    paginate_by = 5
+
+    def get_queryset(self):
+        queryset = Lending.objects.all()
+        self.search_performed = False
+        self.search_term = self.request.GET.get('search')
+        if self.search_term:
+            self.search_performed = True
+            return queryset.filter(Q(book_item__book__title__icontains=self.search_term)|
+                Q(user__first_name__icontains=self.search_term)|
+                Q(user__last_name__icontains=self.search_term)).distinct()
+        return queryset.order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        context = super(LendingList, self).get_context_data(**kwargs)
+        if self.search_performed:
+            context['search_performed'] = True
+            queries_without_page = self.request.GET.copy()
+            if queries_without_page.has_key('page'):
+                del queries_without_page['page']
+            context['queries'] = queries_without_page
+            context['search_term'] = self.search_term
+        return context
 
 
 class AddLending(CreateView):

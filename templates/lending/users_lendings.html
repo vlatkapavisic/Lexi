@@ -7,7 +7,7 @@
 {% block page_title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s lendings" %}{% endblock %}
 {% block title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s lendings" %}{% endblock %}
 {% block main_container %}
-    {% lending_list object_list %}
+    {% users_lending_list object_list %}
     {% if is_paginated %}
         <div class="row">
             <div class="col-md-12">

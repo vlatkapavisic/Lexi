@@ -3,13 +3,21 @@
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, View, FormView
+from django.core.urlresolvers import reverse
+from django.views.generic import ListView, View, FormView, TemplateView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView
 from library.forms import BookSearchForm
 from library.models import *
 
 
+class Home(TemplateView):
+    template_name = 'lexi.html'
+
+
+class Readme(TemplateView):
+    template_name = 'library/readme.html'
+    
 
 class BookList(ListView):
     model = Book

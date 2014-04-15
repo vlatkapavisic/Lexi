@@ -4,24 +4,9 @@
 {% load staticfiles %}
 {% load thumbnail %}
 {% load library_extras %}
-{% block page_title %}{% trans "New lending" %}{% endblock %}
-{% block title %}{% trans "New lending" %} <small>{{ book.title }}</small>{% endblock %}
+{% block page_title %}{% trans "Add lending" %}: {{ book.title }}{% endblock %}
+{% block title %}{% trans "Add lending" %} <small>{{ book.title }}</small>{% endblock %}
 {% block main_container %}
-    <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form role="form" action="" method="post">{% csrf_token %}
-                        {% for bound_field in form %}
-                            <div class="form-group">
-                                {{ bound_field.label_tag }}
-                                {{ bound_field }}
-                            </div>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-default pull-right">{% trans "Lend" %}</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% trans "Lend" as button_text %}
+    {% lending_form form button_text %}
 {% endblock %}

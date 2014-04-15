@@ -47,7 +47,17 @@ def century(year):
     else:
         return 21
 
-@register.inclusion_tag('lending_list.html')
-def lending_list(object_list):
+
+@register.inclusion_tag('users_lending_list.html')
+def users_lending_list(object_list):
     return { 'object_list': object_list }
 
+
+@register.inclusion_tag('lending_form.html')
+def lending_form(form, button_text):
+    return { 'form': form, 'button_text': button_text }
+
+
+@register.inclusion_tag('navbar.html')
+def navbar():
+    return {}

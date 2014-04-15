@@ -9,4 +9,5 @@ urlpatterns = patterns ('',
     url(r'^book/(?P<pk>\d+)/$', BookDetailView.as_view(), name="book"),
     url(r'^publisher/(?P<pk>\d+)/$', PublishersBooks.as_view(), name="publisher"),
     url(r'^advanced-search/$', AdvancedSearch.as_view(), name="advanced-search"),
+    url(r'^readme/$', Readme.as_view(), name="readme"),
     )
