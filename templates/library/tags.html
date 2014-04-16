@@ -4,15 +4,16 @@
 {% load staticfiles %}
 {% load thumbnail %}
 {% load library_extras %}
-{% block page_title %}{% trans "Users" %}{% endblock %}
-{% block title %}{% trans "Users" %}{% endblock %}
+{% block page_title %}{% trans "Tags" %}{% endblock %}
+{% block title %}{% trans "Tags" %}{% endblock %}
 {% block main_container %}
     <div class="row">
         <div class="col-md-3">
             <table class="table table-hover">
                 <tbody>
-                    {% for user in object_list %}
-                        <tr><td><a href="{% url 'users-current-lendings' user.username %}">{{ user.first_name }} {{ user.last_name }}</a></td></tr>
+                    {% for tag in object_list %}
+                        <tr><td><a href="{% url 'tag' tag.id %}">
+                        {{ tag.name }}</a></td></tr>
                     {% endfor %}
                 </tbody>
             </table>

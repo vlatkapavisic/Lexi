@@ -7,8 +7,11 @@
 {% block page_title %}{{ publisher.name }}{% endblock %}
 {% block title %}{{ publisher.name }}{% endblock %}
 {% block main_container %}
-    <h4>{% trans "Books by this publisher" %}:</h4>
-    <p></p>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {% trans "Books by this publisher" %}
+        </div>
+    </div>
     {% book_list object_list %}
     {% if is_paginated %}
         <div class="row">

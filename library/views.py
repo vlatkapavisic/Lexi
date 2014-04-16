@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
+from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
-from django.core.urlresolvers import reverse
 from django.views.generic import ListView, View, FormView, TemplateView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView
 from library.forms import BookSearchForm
 from library.models import *
+
 
 
 class Home(TemplateView):
@@ -17,7 +18,19 @@ class Home(TemplateView):
 
 class Readme(TemplateView):
     template_name = 'library/readme.html'
-    
+
+
+class TagsList(ListView):
+    model = Tag
+    paginate_by = 10
+    template_name = "library/tags.html"
+
+
+class CategoriesList(ListView):
+    model = Category
+    paginate_by = 10
+    template_name = "library/categories.html"
+
 
 class BookList(ListView):
     model = Book
@@ -83,6 +96,36 @@ class PublishersBooks(ListView):
     def get_context_data(self, **kwargs):
         context = super(PublishersBooks, self).get_context_data(**kwargs)
         context['publisher'] = self.publisher
+        return context
+
+
+class TagsBooks(ListView):
+    model = Book
+    template_name = "library/tags_books.html"
+    paginate_by = 3
+
+    def get_queryset(self):
+        self.tag = get_object_or_404(Tag, pk=self.kwargs['pk'])
+        return Book.objects.filter(tags__name=self.tag).order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        context = super(TagsBooks, self).get_context_data(**kwargs)
+        context['tag'] = self.tag
+        return context
+
+
+class CategorysBooks(ListView):
+    model = Book
+    template_name = "library/categorys_books.html"
+    paginate_by = 3
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, pk=self.kwargs['pk'])
+        return Book.objects.filter(category__name=self.category).order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        context = super(CategorysBooks, self).get_context_data(**kwargs)
+        context['category'] = self.category
         return context
 
 

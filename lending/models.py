@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 from django.utils import timezone
 from library.models import Book
+
 
 
 __all__ = ('BookItem', 'Lending')
@@ -39,13 +40,12 @@ class BookItem(models.Model):
     def book_title(self):
         return self.book.title
 
-    def get_borrower(self):
+    def borrowed_by(self):
         if self.borrowed:
-            return Lending.objects.filter(book_item=self).first().user.username
+            lending = Lending.objects.filter(book_item=self).first()
+            return lending.user.first_name + " " + lending.user.last_name
         else:
             return ""
-
-    get_borrower.short_description = _(u'borrowed by')
 
 
 class Lending(models.Model):
@@ -76,8 +76,8 @@ class Lending(models.Model):
     def book_title(self):
         return self.book_item.book.title
 
-    def user_name(self):
-        return self.user.username
+    def borrowed_by(self):
+        return self.user.first_name + " " + self.user.last_name
    
 
 @receiver(pre_delete, sender=Lending)

@@ -5,12 +5,12 @@ from library.models import *
 
 
 class BookAdmin(admin.ModelAdmin):
-	list_display = ('title','publication_year',
-		'get_authors','get_tags','category','language','get_number_of_book_items',
-		'get_number_of_available_book_items')
-	filter_horizontal = ('authors', 'tags')
-	search_fields = ['title','publication_year','authors__first_name', 
-	'authors__last_name', 'tags__name', 'category__name']
+    list_display = ('title','publication_year',
+    	'get_authors','get_tags','category','language','total',
+    	'available')
+    filter_horizontal = ('authors', 'tags')
+    search_fields = ['title','publication_year','authors__name',
+     'tags__name', 'category__name']
  
 
 class AuthorAdmin(admin.ModelAdmin):

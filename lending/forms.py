@@ -5,8 +5,8 @@ from django.forms import ModelForm, DateInput, ModelChoiceField
 from django.forms.extras.widgets import SelectDateWidget, Select
 from django.utils import timezone
 from django.utils.translation import ugettext as _
-from datetime import date
 from lending.models import Lending, BookItem
+
 
 
 class UserFullNameChoiceField(ModelChoiceField):
@@ -60,5 +60,3 @@ class EditLendingForm(ModelForm):
             'book_item' : Select(attrs={'class':'form-control'}),
             'start_date': SelectDateWidget(attrs={'class':'form-control'})
         }
-        
-

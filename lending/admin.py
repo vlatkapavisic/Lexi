@@ -1,19 +1,30 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
+from django.contrib.auth.models import User
 from django.contrib import admin
+from django.forms.extras.widgets import Select
+from django.utils import timezone
 from lending.models import *
 from library.models import *
-from django.utils import timezone
+
 
 
 class BookItemAdmin(admin.ModelAdmin):
-	list_display = ('item_id','book','borrowed','get_borrower')
+	list_display = ('item_id','book','borrowed','borrowed_by')
 	exclude = ('item_id','borrowed')
-	list_filter = ('borrowed',)
+	list_filter = ('borrowed','book')
 
+
+class UserFullNameChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.first_name + " " + obj.last_name
+    
 
 class LendingAdminForm(forms.ModelForm):
+	user = UserFullNameChoiceField(User.objects.order_by('last_name'), 
+        widget=Select(attrs={'class':'form-control'}))
+
 	class Meta:
 		model = Lending
 
@@ -24,8 +35,9 @@ class LendingAdminForm(forms.ModelForm):
 
 
 class LendingAdmin(admin.ModelAdmin):
-	list_display = ('book_item','user_name','start_date','end_date')
+	list_display = ('book_item','borrowed_by','start_date','end_date')
 	form = LendingAdminForm
+	list_filter = ('user','book_item__book')
 
 
 admin.site.register(BookItem, BookItemAdmin)

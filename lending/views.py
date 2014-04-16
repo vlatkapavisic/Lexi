@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.utils import timezone
 from django.views.generic import ListView, View, TemplateView, CreateView, \
                                 UpdateView
 from django.views.generic.detail import DetailView
 from lending.models import *
-from library.models import *
 from lending.forms import AddLendingForm, FinishLendingForm, EditLendingForm
+from library.models import *
 
 
 
@@ -27,7 +27,7 @@ class LendingList(ListView):
             return queryset.filter(Q(book_item__book__title__icontains=self.search_term)|
                 Q(user__first_name__icontains=self.search_term)|
                 Q(user__last_name__icontains=self.search_term)).distinct()
-        return queryset.order_by('-id')
+        return queryset.order_by('-start_date')
 
     def get_context_data(self, **kwargs):
         context = super(LendingList, self).get_context_data(**kwargs)
@@ -102,7 +102,7 @@ class UsersCurrentLendings(ListView):
 
     def get_queryset(self):
         self.user = User.objects.get(username=self.kwargs['username'])
-        return Lending.objects.filter(user=self.user, end_date=None).order_by('-id')
+        return Lending.objects.filter(user=self.user, end_date=None).order_by('-start_date')
 
     def get_context_data(self, **kwargs):
         context = super(UsersCurrentLendings, self).get_context_data(**kwargs)
@@ -117,7 +117,7 @@ class UsersLendings(ListView):
 
     def get_queryset(self):
         self.user = User.objects.get(username=self.kwargs['username']) 
-        return Lending.objects.filter(user=self.user).order_by('-id')
+        return Lending.objects.filter(user=self.user).order_by('-start_date')
 
     def get_context_data(self, **kwargs):
         context = super(UsersLendings, self).get_context_data(**kwargs)

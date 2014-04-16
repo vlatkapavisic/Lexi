@@ -27,7 +27,7 @@
             {% endif %}
             {% trans "Tags" %}:
             {% for tag in object.tags.all %}
-                <span class="label label-default">{{ tag.name }}</span>
+                <span class="label label-info"><a href="{% url 'tag' tag.id %}">{{ tag.name }}</a></span>
             {% endfor %}<p></p>
             <p>{% trans "Publication year" %}: {{ object.publication_year}}</p>
             {% if object.authors.all.count > 1 %}
@@ -41,13 +41,18 @@
                     {% if not forloop.last %}<span>, </span>{% endif %}
                 {% endfor %}
             {% endspaceless %}</p>
-            <p>{% trans "Publisher" %}: <a href="{{ object.publisher.get_absolute_url }}">{{ object.publisher }}</a></p>
+            <p>{% trans "Publisher" %}: <a href="{{ object.publisher.get_absolute_url }}">
+                {{ object.publisher }}</a></p>
             <p>ISBN: {{ object.isbn }}</p>
             <p>{% trans "Language" %}: {{ object.get_language_display }}</p>
-            <p>{% trans "Category" %}: {{ object.category }}</p>
-            <p>{% trans "Number of copies" %}: {{ object.get_number_of_book_items }}</p>
-            <p>{% trans "Number of available copies" %}: {{ object.get_number_of_available_book_items }}</p>
-            <p><button type="button" class="btn btn-default" {% if object.get_number_of_available_book_items = 0 %}disabled="disabled"{% endif %}><a href="{% url 'add-lending' object.id %}">Lend</a></button></p>
+            <p>{% trans "Category" %}: <span class="label label-warning">
+                <a href="{% url 'category' object.category.id %}">{{ object.category }}</a></span></p>
+            <p>{% trans "Number of items" %}: {{ object.total }}</p>
+            <p>{% trans "Number of available items" %}: {{ object.available }}</p>
+            <p><button type="button" class="btn btn-default" 
+                {% if object.available = 0 %}disabled="disabled"{% endif %}>
+                <a href="{% url 'add-lending' object.id %}">{% trans "Lend" %}</a>
+                </button></p>
         </div>
     </div>
 {% endblock %}

@@ -45,13 +45,13 @@
                         <td><a href="{{ book.publisher.get_absolute_url }}">{{ book.publisher }}</td>
                         <td>
                             <!-- <span class="badge">{{ book.book_items.all.count }}</span> /
-                            <span class="badge">{{ book.get_number_of_available_book_items }}</span> -->
+                            <span class="badge">{{ book.available }}</span> -->
                             <div class="progress progress-striped">
-                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{% percentage book.get_number_of_available_book_items book.book_items.all.count %}" aria-valuemin="0" aria-valuemax="100" style="width: {% percentage book.get_number_of_available_book_items book.book_items.all.count %}%">
-                                    {% percentage book.get_number_of_available_book_items book.book_items.all.count %}% 
+                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{% percentage book.available book.book_items.all.count %}" aria-valuemin="0" aria-valuemax="100" style="width: {% percentage book.available book.book_items.all.count %}%">
+                                    {% percentage book.available book.book_items.all.count %}% 
                                 </div>
                             </div>
-                            <!--{{ book.get_number_of_available_book_items }} / {{ book.book_items.all.count }}-->
+                            <!--{{ book.available }} / {{ book.book_items.all.count }}-->
                         </td>
                     </tr>
                     {% endfor %}

@@ -4,12 +4,12 @@
 {% load static %}
 {% load staticfiles %}
 {% load thumbnail %}
-{% block page_title %}{{ author.name }}{% endblock %}
-{% block title %}{{ author.name }}{% endblock %}
+{% block page_title %}{{ category.name }}{% endblock %}
+{% block title %}{{ category.name }}{% endblock %}
 {% block main_container %}
     <div class="panel panel-default">
         <div class="panel-body">
-            {% trans "Books by this author" %}
+            {% trans "Books in this category" %}
         </div>
     </div>
     {% book_list object_list %}

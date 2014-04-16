@@ -4,15 +4,14 @@
 {% load static %}
 {% load staticfiles %}
 {% load thumbnail %}
-{% block page_title %}{{ author.name }}{% endblock %}
-{% block title %}{{ author.name }}{% endblock %}
+{% block page_title %}{{ tag.name }}{% endblock %}
+{% block title %}{{ tag.name }}{% endblock %}
 {% block main_container %}
     <div class="panel panel-default">
         <div class="panel-body">
-            {% trans "Books by this author" %}
+            {% trans "Books with this tag" %}
         </div>
-    </div>
-    {% book_list object_list %}
+    </div>    {% book_list object_list %}
     {% if is_paginated %}
         <div class="row">
             <div class="col-md-12">

@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 
 
+
 __all__ = ('Author', 'Publisher', 'Category', 'Tag', 'Book')
 
 
@@ -106,22 +107,16 @@ class Book(models.Model):
 
     get_tags.short_description = _(u"tags")
 
-    def get_number_of_book_items(self):
+    def total(self):
         from lending.models import BookItem
     	return BookItem.objects.all().filter(book=self).count()
 
-    get_number_of_book_items.short_description = _(u"total")
-
-    def get_number_of_borrowed_book_items(self):
+    def borrowed(self):
         from lending.models import BookItem
     	return BookItem.objects.all().filter(book=self, borrowed=True).count()
 
-    get_number_of_borrowed_book_items.short_description = _(u"borrowed")
-
-    def get_number_of_available_book_items(self):
+    def available(self):
         from lending.models import BookItem
         return BookItem.objects.all().filter(book=self, borrowed=False).count()
-
-    get_number_of_available_book_items.short_description = _(u"available")
 
 

@@ -7,6 +7,9 @@ from django.contrib import admin
 from lending.views import UsersList
 from library.views import Home
 
+
+
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -15,7 +18,9 @@ urlpatterns = patterns('',
     url(r'^books/', include('library.urls')),
     url(r'^lendings/', include('lending.urls')),
     url(r'^users/$', UsersList.as_view(), name="users"),
-) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+) 
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
