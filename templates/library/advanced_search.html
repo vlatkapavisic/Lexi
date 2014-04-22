@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load library_extras %}
+{% load lexi_extras %}
 {% load static %}
 {% load staticfiles %}
 {% load thumbnail %}
 {% block page_title %}{% trans "Advanced book search" %}{% endblock %}
 {% block title %}{% trans "Advanced book search" %}{% endblock %}
 {% block main_container %}
-    {% search request.GET %}
+    {% advanced_search request.GET %}
     {% book_list object_list search_performed %}
     {% if is_paginated %}
         <div class="row">

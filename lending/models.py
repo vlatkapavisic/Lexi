@@ -33,7 +33,7 @@ class BookItem(models.Model):
             try:
                 latest_item = BookItem.objects.filter(book=self.book).order_by('-item_id').first()
                 self.item_id = latest_item.item_id + 1
-            except IndexError:
+            except:
                 self.item_id = 1
         super(BookItem, self).save(*args, **kwargs)
 
@@ -85,3 +85,5 @@ def lending_ended(sender, **kwargs):
     lending = kwargs['instance']
     lending.book_item.borrowed = False
     lending.book_item.save()
+
+

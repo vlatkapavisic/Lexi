@@ -2,18 +2,18 @@
 {% load i18n %}
 {% load static %}
 {% load thumbnail %}
-{% load library_extras %}
+{% load lexi_extras %}
 {% block page_title %}{{ object.title }}{% endblock %}
 {% block title %}{{ object.title }}{% endblock %}
 {% block main_container %}
     <div class="row">
         <div class="col-md-4">
             {% if object.cover_image %}
-                {% thumbnail object.cover_image "260" crop="center" as im %}
+                {% thumbnail object.cover_image "260x338" as im %}
                     <img src="{{ im.url }}"/>
                 {% endthumbnail %}
             {% else %}
-                <img src="{% static 'images/noimage.jpg' %}" width="260"/>
+                <img src="{% static 'images/noimage.jpg' %}" width="260" height="338"/>
             {% endif %}
         </div>
 
@@ -49,10 +49,9 @@
                 <a href="{% url 'category' object.category.id %}">{{ object.category }}</a></span></p>
             <p>{% trans "Number of items" %}: {{ object.total }}</p>
             <p>{% trans "Number of available items" %}: {{ object.available }}</p>
-            <p><button type="button" class="btn btn-default" 
-                {% if object.available = 0 %}disabled="disabled"{% endif %}>
-                <a href="{% url 'add-lending' object.id %}">{% trans "Lend" %}</a>
-                </button></p>
+            <p><a href="{% url 'add-lending' object.id %}" class="btn btn-default"
+                role="button" {% if object.available = 0 %}disabled="disabled"{% endif %}>
+                {% trans "Lend" %}</a></p>
         </div>
     </div>
 {% endblock %}

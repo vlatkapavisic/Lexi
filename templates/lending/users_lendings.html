@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load library_extras %}
+{% load lexi_extras %}
 {% load static %}
 {% load staticfiles %}
 {% load thumbnail %}
-{% block page_title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s lendings" %}{% endblock %}
-{% block title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s lendings" %}{% endblock %}
+{% block page_title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s past lendings" %}{% endblock %}
+{% block title %}{{ lender.first_name }} {{ lender.last_name }}{% endblock %}
 {% block main_container %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {% trans "Past lendings" %}
+        </div>
+    </div>
     {% users_lending_list object_list %}
     {% if is_paginated %}
         <div class="row">

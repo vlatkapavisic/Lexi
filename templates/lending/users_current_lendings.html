@@ -1,19 +1,37 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load library_extras %}
+{% load lexi_extras %}
 {% load static %}
 {% load staticfiles %}
 {% load thumbnail %}
-{% block page_title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s current lendings" %}{% endblock %}
-{% block title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s current lendings" %}{% endblock %}
+{% block page_title %}{{ lender.first_name }} {{ lender.last_name }}{% endblock %}
+{% block title %}{{ lender.first_name }} {{ lender.last_name }}{% endblock %}
 {% block main_container %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {% trans "Current lendings" %}
+        </div>
+    </div>
     {% users_lending_list object_list %}
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-info"><a href="{% url 'users-lendings' lender.username %}">{% trans "All lendings" %}</a></button>
             {% if is_paginated %}
                 {% pagination page_obj queries %}
             {% endif %}
         </div>
     </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {% trans "Past lendings" %}&nbsp;&nbsp;<a href="{% url 'users-past-lendings' lender.id %}"
+                class="btn btn-info" role="button"
+                {% if not past_lendings %}disabled="disabled"{% endif %}>{% trans "View all" %}</a>
+        </div>
+    </div>
+    {% if past_lendings %}
+        {% users_lending_list past_lendings %}
+    {% else %}
+        {{ lender.first_name }} {{ lender.last_name }} {% trans "has no ended lendings." %}
+    {% endif %}
+
 {% endblock %}

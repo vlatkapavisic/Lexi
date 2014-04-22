@@ -3,29 +3,17 @@
 {% load static %}
 {% load staticfiles %}
 {% load thumbnail %}
-{% load library_extras %}
+{% load lexi_extras %}
 {% block page_title %}{% trans "Lendings" %}{% endblock %}
 {% block title %}{% trans "Lendings" %}{% endblock %}
 {% block main_container %}
-    <div class="row">
-        <div class="col-md-12">
-            <p>
-            <form class="form-inline" role="form">
-                <div class="form-group">
-                    <label class="sr-only" for="search">{% trans "Search lendings" %}</label>
-                    <input type="text" class="form-control" id="search" name="search" 
-                    {% if search_performed %}value="{{ search_term }}"{% else %}placeholder="Enter search term"{% endif %}>
-                </div>
-                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-            </form>
-            </p>
-        </div>
-    </div>
+    {% simple_search %}
     <div class="row">
         <div class="col-md-12">
             {% if object_list %}
                     {% if search_performed %}
-                        <div class="alert alert-info">{% trans "Here are the search results:" %}</div>
+                        <div class="alert alert-info">
+                            {% trans "Here are the search results:" %}</div>
                     {% endif %}
                     <table class="table table-hover">
                         <thead>
@@ -40,19 +28,21 @@
                         </thead>
                         <tbody>
                             {% for lending in object_list %}
-                            <tr>
-                                <td><a href="{% url 'view-lending' lending.id %}">
-                                {{ lending.book_item }}</a></td>
-                                <td><a href="{% url 'users-current-lendings' lending.user.username %}">{{ lending.user.first_name }} {{ lending.user.last_name }}</a></td>
-                                <td>{{ lending.start_date }}</td>
-                                <td>{{ lending.end_date }}</td>
-                                <td><button type="button" class="btn btn-default">
-                                <a href="{% url 'edit-lending' lending.id %}">
-                                {% trans "Edit" %}</a></button></td>
-                                <td><button type="button" class="btn btn-default"
-                                {% if lending.end_date != None %}disabled="disabled"{% endif %}>
-                                <a href="{% url 'finish-lending' lending.id %}">
-                                {% trans "Finish lending" %}</a></button></td>
+                                <tr {% if lending.end_date == None %}class="danger"{% endif %}>
+                                    <td><a href="{% url 'view-lending' lending.id %}">
+                                    {{ lending.book_item }}</a></td>
+                                    <td><a href="{% url 'users-current-lendings' lending.user.id %}">
+                                        {{ lending.user.first_name }} {{ lending.user.last_name }}</a></td>
+                                    <td>{{ lending.start_date }}</td>
+                                    <td>{{ lending.end_date|default_if_none:"----" }}</td>
+                                    <td><a href="{% url 'edit-lending' lending.id %}" class="btn btn-default"
+                                    role="button">
+                                    {% trans "Edit" %}</a></td>
+                                    <td><a href="{% url 'finish-lending' lending.id %}"
+                                    class="btn btn-default" role="button"
+                                    {% if lending.end_date != None %}disabled="disabled"{% endif %}>
+                                    {% trans "Finish lending" %}</a></td>
+                                </tr>
                             {% endfor %}
                         </tbody>
                     </table>

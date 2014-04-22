@@ -12,8 +12,8 @@ from library.models import *
 
 class BookItemAdmin(admin.ModelAdmin):
 	list_display = ('item_id','book','borrowed','borrowed_by')
-	exclude = ('item_id','borrowed')
 	list_filter = ('borrowed','book')
+	exclude = ('item_id','borrowed')
 
 
 class UserFullNameChoiceField(forms.ModelChoiceField):
@@ -35,8 +35,8 @@ class LendingAdminForm(forms.ModelForm):
 
 
 class LendingAdmin(admin.ModelAdmin):
-	list_display = ('book_item','borrowed_by','start_date','end_date')
 	form = LendingAdminForm
+	list_display = ('book_item','borrowed_by','start_date','end_date')
 	list_filter = ('user','book_item__book')
 
 

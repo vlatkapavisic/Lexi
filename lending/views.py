@@ -24,7 +24,8 @@ class LendingList(ListView):
         self.search_term = self.request.GET.get('search')
         if self.search_term:
             self.search_performed = True
-            return queryset.filter(Q(book_item__book__title__icontains=self.search_term)|
+            return queryset.filter \
+                (Q(book_item__book__title__icontains=self.search_term)|
                 Q(user__first_name__icontains=self.search_term)|
                 Q(user__last_name__icontains=self.search_term)).distinct()
         return queryset.order_by('-start_date')
@@ -91,7 +92,7 @@ class LendingAdded(TemplateView):
         context = super(LendingAdded, self).get_context_data(**kwargs)
         self.lending = Lending.objects.get(pk=self.kwargs['lending_pk']) 
         context['book_title'] = self.lending.book_item.book.title
-        context['username'] = self.lending.user.username
+        context['lending_user'] = self.lending.user
         return context
 
 
@@ -101,12 +102,15 @@ class UsersCurrentLendings(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        self.user = User.objects.get(username=self.kwargs['username'])
-        return Lending.objects.filter(user=self.user, end_date=None).order_by('-start_date')
+        self.user = User.objects.get(id=self.kwargs['user_id'])
+        return Lending.objects.filter(user=self.user, end_date=None). \
+            order_by('-start_date')
 
     def get_context_data(self, **kwargs):
         context = super(UsersCurrentLendings, self).get_context_data(**kwargs)
         context['lender'] = self.user
+        context['past_lendings'] = Lending.objects.filter(user=self.user). \
+            exclude(end_date=None).order_by('-start_date')[:5]
         return context
 
 
@@ -116,8 +120,9 @@ class UsersLendings(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        self.user = User.objects.get(username=self.kwargs['username']) 
-        return Lending.objects.filter(user=self.user).order_by('-start_date')
+        self.user = User.objects.get(id=self.kwargs['user_id']) 
+        return Lending.objects.filter(user=self.user).exclude(end_date=None). \
+            order_by('-start_date')
 
     def get_context_data(self, **kwargs):
         context = super(UsersLendings, self).get_context_data(**kwargs)

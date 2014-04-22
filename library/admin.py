@@ -1,10 +1,19 @@
 # -*- coding: utf-8 -*-
 
+from django import forms
 from django.contrib import admin
 from library.models import *
 
 
+class BookForm(forms.ModelForm):
+    description = forms.CharField(widget=forms.Textarea)
+
+    class Meta:
+        model = Book
+
+
 class BookAdmin(admin.ModelAdmin):
+    form = BookForm
     list_display = ('title','publication_year',
     	'get_authors','get_tags','category','language','total',
     	'available')

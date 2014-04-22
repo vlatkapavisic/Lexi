@@ -14,10 +14,10 @@
                     <tr>
                         <th></th>
                         <th>{% trans "Book title" %}</th>
-                        <th>{% trans "Publication year" %}</th>
+                        <th width="130">{% trans "Publication year" %}</th>
                         <th>{% trans "Author(s)" %}</th>
                         <th>{% trans "Publisher" %}</th>
-                        <th>{% trans "Available" %}</th>
+                        <th width="100">{% trans "Available" %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,11 +25,11 @@
                     <tr>
                         <td>
                             {% if book.cover_image %}
-                                {% thumbnail book.cover_image "50" crop="center" as im %}
+                                {% thumbnail book.cover_image "50x65" as im %}
                                     <a href="{{ book.get_absolute_url }}"><img src="{{ im.url }}"/></a>
                                 {% endthumbnail %}
                             {% else %}
-                                <img src="{% static 'images/noimage.jpg' %}" width="50" />
+                                <img src="{% static 'images/noimage.jpg' %}" width="50" height="65"/>
                             {% endif %}
                         </td>
                         <td><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></td>
@@ -44,14 +44,11 @@
                         </td>
                         <td><a href="{{ book.publisher.get_absolute_url }}">{{ book.publisher }}</td>
                         <td>
-                            <!-- <span class="badge">{{ book.book_items.all.count }}</span> /
-                            <span class="badge">{{ book.available }}</span> -->
                             <div class="progress progress-striped">
-                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{% percentage book.available book.book_items.all.count %}" aria-valuemin="0" aria-valuemax="100" style="width: {% percentage book.available book.book_items.all.count %}%">
-                                    {% percentage book.available book.book_items.all.count %}% 
+                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{% percentage book.available book.total %}" aria-valuemin="0" aria-valuemax="100" style="width: {% percentage book.available book.total %}%">
+                                    {% percentage book.available book.total %}% 
                                 </div>
                             </div>
-                            <!--{{ book.available }} / {{ book.book_items.all.count }}-->
                         </td>
                     </tr>
                     {% endfor %}

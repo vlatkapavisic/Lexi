@@ -1,0 +1,30 @@
+{% load i18n %}
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>{% trans "Book item" %}</th>
+                    <th>{% trans "Start date" %}</th>
+                    <th>{% trans "End date" %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lending in object_list %}
+                    <tr>
+                        <td><a href="{% url 'view-lending' lending.id %}">
+                            {{ lending.book_item }}</a></td>
+                        <td>{{ lending.start_date }}</td>
+                        <td>{{ lending.end_date|default_if_none:"----" }}</td>
+                        <td>
+                            <a href="{% url 'finish-lending' lending.id %}"
+                            class="btn btn-default" role="button" 
+                            {% if lending.end_date != None %}disabled="disabled"{% endif %}>
+                            {% trans "Finish lending" %}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

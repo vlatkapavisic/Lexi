@@ -1,0 +1,30 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form class="form-inline" role="form" action="{% url 'advanced-search' %}">
+            <div class="row">
+                {% for bound_field in form %}
+                    <div class="col-md-2">
+                        <label for="{{ bound_field.id_for_label }}">{{ bound_field.label }}</label> 
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                {% for bound_field in form %}
+                    <div class="col-md-2">
+                        <input name="{{ bound_field.name }}" type="text" class="form-control" id="{{ bound_field.auto_id }}" {% if bound_field.value %}value="{{ bound_field.value }}"{% endif %}{% if bound_field.field.max_length %} maxlength="{{ bound_field.field.max_length }}"{% endif %}>
+                    </div>
+                {% endfor %}
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></button>
+                </div>
+            </div>
+            <!--<div class="row">
+                {% for bound_field in form %}
+                    <div class="col-md-2 help-block">
+                        {{ bound_field.help_text }}
+                    </div>
+                {% endfor %}
+            </div> -->
+        </form>
+    </div>
+</div>

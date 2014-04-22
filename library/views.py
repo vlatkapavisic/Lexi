@@ -76,7 +76,8 @@ class AuthorsBooks(ListView):
 
     def get_queryset(self):
         self.author = get_object_or_404(Author, pk=self.kwargs['pk'])
-        return Author.objects.get(pk=self.kwargs['pk']).books.all().order_by('-id')
+        return Author.objects.get(pk=self.kwargs['pk']).books.all(). \
+            order_by('-id')
 
     def get_context_data(self, **kwargs):
         context = super(AuthorsBooks, self).get_context_data(**kwargs)

@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 __all__ = ('Author', 'Publisher', 'Category', 'Tag', 'Book')
 
 
+
 class Author(models.Model):
     first_name = models.CharField(verbose_name=_(u"first name"), max_length=50)
     last_name = models.CharField(verbose_name=_(u"last name"), max_length=50)

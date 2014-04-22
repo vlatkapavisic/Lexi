@@ -33,6 +33,7 @@ class AddLendingForm(ModelForm):
             book=book, borrowed=False)
         self.fields['book_item'].initial = BookItem.objects.filter(
             book=book, borrowed=False).first()
+        self.fields['book_item'].empty_label = None
         self.fields['start_date'].initial = timezone.now()
 
 
@@ -55,8 +56,9 @@ class EditLendingForm(ModelForm):
 
     class Meta:
         model = Lending
-        fields = ['user', 'book_item', 'start_date']
+        fields = ['user', 'book_item', 'start_date', 'end_date']
         widgets = {
             'book_item' : Select(attrs={'class':'form-control'}),
-            'start_date': SelectDateWidget(attrs={'class':'form-control'})
+            'start_date': SelectDateWidget(attrs={'class':'form-control'}),
+            'end_date': SelectDateWidget(attrs={'class':'form-control'})
         }
