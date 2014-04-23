@@ -37,12 +37,11 @@ def pagination(page_obj, queries={}):
     last = page_obj.paginator.page_range[-1]
     start = page_obj.number
     if start == last - 1:
-        start = page_obj.number - 1
+        start -= 1
     elif start == last:
-        start = page_obj.number - 2
-    end = start + 3
-    page_range = range(start, end)
-    return { 'page_obj': page_obj,'queries': queries, 'page_range': page_range,
+        start -= 2
+    pagination_range = range(start, start + 3)
+    return { 'page_obj': page_obj,'queries': queries, 'pagination_range': pagination_range,
         'last': last }
 
 

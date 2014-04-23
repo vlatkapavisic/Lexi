@@ -7,17 +7,19 @@
 {% block page_title %}{{ lender.first_name }} {{ lender.last_name }}{% trans "'s past lendings" %}{% endblock %}
 {% block title %}{{ lender.first_name }} {{ lender.last_name }}{% endblock %}
 {% block main_container %}
-    <div class="panel panel-default">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">{% trans "Past lendings" %}</h3>
+        </div>
         <div class="panel-body">
-            {% trans "Past lendings" %}
+            {% users_lending_list object_list %}
+            {% if is_paginated %}
+                <div class="row">
+                    <div class="col-md-12">
+                        {% pagination page_obj %}
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
-    {% users_lending_list object_list %}
-    {% if is_paginated %}
-        <div class="row">
-            <div class="col-md-12">
-                {% pagination page_obj queries %}
-            </div>
-        </div>
-    {% endif %}
 {% endblock %}

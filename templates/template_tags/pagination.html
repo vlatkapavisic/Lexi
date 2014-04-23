@@ -2,24 +2,30 @@
     {% if page_obj.has_previous %}
         <li><a {% if queries %}href="?{{queries.urlencode}}&amp;page={{ page_obj.previous_page_number }}"
             {% else %}href="?page={{ page_obj.previous_page_number }}"{% endif %}>&laquo;</a></li>
-        <li><a {% if queries %}href="?{{queries.urlencode}}&amp;page=1"{% else %}
-                    href="?page=1"{% endif %}>{{ 1 }}</a></li>
-        <li class="disabled"><a href="#">...</a></li>
+        {% if page_obj.paginator.page_range|length > 3 %}
+            <li><a {% if queries %}href="?{{queries.urlencode}}&amp;page=1"{% else %}
+                        href="?page=1"{% endif %}>{{ 1 }}</a></li>
+            <li class="disabled"><a href="#">...</a></li>
+        {% endif %}
     {% else %}
         <li class="disabled"><a href="#">&laquo;</a></li>
     {% endif %}
-    {% for num in page_range %}
+    {% for num in pagination_range %}
         {% ifequal num page_obj.number %}
             <li class="active"><a href="#">{{ num }}<span class="sr-only">(current)</span></a></li>
         {% else %}
-            <li><a {% if queries %}href="?{{queries.urlencode}}&amp;page={{ num }}"{% else %}
+            {% if num > 0 %}
+               <li><a {% if queries %}href="?{{queries.urlencode}}&amp;page={{ num }}"{% else %}
                 href="?page={{ num }}"{% endif %}>{{ num }}</a></li>
+            {% endif %}
         {% endifequal %}
     {% endfor %}
     {% if page_obj.has_next %}
-        <li class="disabled"><a href="#">...</a></li>
-        <li><a {% if queries %}href="?{{queries.urlencode}}&amp;page={{ last }}"{% else %}
-                    href="?page={{ last }}"{% endif %}>{{ last }}</a></li>
+        {% if page_obj.paginator.page_range|length > 3 and page_obj.number < last|add:"-2" %}
+            <li class="disabled"><a href="#">...</a></li>
+            <li><a {% if queries %}href="?{{queries.urlencode}}&amp;page={{ last }}"{% else %}
+                        href="?page={{ last }}"{% endif %}>{{ last }}</a></li>
+        {% endif %}
         <li><a {% if queries %}href="?{{queries.urlencode}}&amp;page={{ page_obj.next_page_number }}"
             {% else %}href="?page={{ page_obj.next_page_number }}"{% endif %}>&raquo;</a></li>
     {% else %}
