@@ -15,8 +15,10 @@ __all__ = ('BookItem', 'Lending')
     
 
 class BookItem(models.Model):
-    book = models.ForeignKey(Book, verbose_name=_(u"book"), related_name="book_items")
-    borrowed = models.BooleanField(default=False, editable=False, verbose_name=_(u"borrowed"))
+    book = models.ForeignKey(Book, verbose_name=_(u"book"), 
+        related_name="book_items")
+    borrowed = models.BooleanField(default=False, editable=False, 
+        verbose_name=_(u"borrowed"))
     item_id = models.IntegerField(verbose_name=_(u"item ID"))
 
     class Meta:
@@ -29,9 +31,10 @@ class BookItem(models.Model):
         return u"{0} ({1})".format(self.book.title, str(self.item_id))
 
     def save(self, *args, **kwargs):
-        if self.pk is None:  #prvo spremanje, novi objekt
+        if self.pk is None:  
             try:
-                latest_item = BookItem.objects.filter(book=self.book).order_by('-item_id').first()
+                latest_item = BookItem.objects.filter(book=self.book). \
+                    order_by('-item_id').first()
                 self.item_id = latest_item.item_id + 1
             except:
                 self.item_id = 1
@@ -49,10 +52,12 @@ class BookItem(models.Model):
 
 
 class Lending(models.Model):
-    book_item = models.ForeignKey(BookItem, verbose_name=_(u"book item"), related_name="book_item")
+    book_item = models.ForeignKey(BookItem, verbose_name=_(u"book item"), 
+        related_name="book_item")
     user = models.ForeignKey(User)
     start_date = models.DateField(verbose_name=_(u"start date")) 
-    end_date = models.DateField(blank=True, null=True, verbose_name=_(u"end date")) 
+    end_date = models.DateField(blank=True, null=True, 
+        verbose_name=_(u"end date")) 
 
     class Meta:
         verbose_name = _(u"lending")

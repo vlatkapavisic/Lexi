@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="alert alert-info">
-                {% blocktrans %}Book "{{ book_title }}" has been lended to {% endblocktrans %}<a href="{% url 'users-current-lendings' lending_user.username %}" class="alert-link">{{ lending_user.first_name }} {{ lending_user.last_name }}</a>.
+                {% blocktrans %}Book "{{ book_title }}" has been lended to {% endblocktrans %}<a href="{% url 'users-current-lendings' lending_user.id %}" class="alert-link">{{ lending_user.first_name }} {{ lending_user.last_name }}</a>.
             </div>
         </div>
     </div>

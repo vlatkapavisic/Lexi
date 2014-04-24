@@ -77,15 +77,22 @@ class Book(models.Model):
         ('de-DE',_(u'German')),
     )
     title = models.CharField(verbose_name=_(u"title"), max_length=200)
-    description = models.CharField(verbose_name=_(u"description"), max_length=1000, blank=True)
+    description = models.CharField(verbose_name=_(u"description"),
+        max_length=1000, blank=True)
     isbn = models.CharField(verbose_name="isbn", max_length=24)
-    authors = models.ManyToManyField(Author, verbose_name=_(u"authors"), related_name="books")
-    publisher = models.ForeignKey(Publisher, verbose_name=_(u"publisher"), related_name="books")
+    authors = models.ManyToManyField(Author, verbose_name=_(u"authors"), 
+        related_name="books")
+    publisher = models.ForeignKey(Publisher, verbose_name=_(u"publisher"), 
+        related_name="books")
     publication_year = models.IntegerField(verbose_name=_(u"publication year"))
-    cover_image = models.ImageField(upload_to='cover_images', blank=True, verbose_name=_(u"cover image"))
-    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_(u"tags"), related_name="books")
-    language = models.CharField(max_length=5, choices=LANGUAGE_CHOICES, verbose_name=_(u"language"))
-    category = models.ForeignKey(Category, verbose_name=_(u"category"), related_name="books")
+    cover_image = models.ImageField(upload_to='cover_images', blank=True, 
+        verbose_name=_(u"cover image"))
+    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_(u"tags"), 
+        related_name="books")
+    language = models.CharField(max_length=5, choices=LANGUAGE_CHOICES, 
+        verbose_name=_(u"language"))
+    category = models.ForeignKey(Category, verbose_name=_(u"category"), 
+        related_name="books")
 
     class Meta:
         verbose_name = _(u"book")

@@ -10,6 +10,9 @@ from django.views.generic.detail import DetailView
 from lending.models import *
 from lending.forms import AddLendingForm, FinishLendingForm, EditLendingForm
 from library.models import *
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 
 
@@ -17,6 +20,11 @@ class LendingList(ListView):
     model = Lending
     template_name = 'lending/lendings.html'
     paginate_by = 5
+
+    @method_decorator(login_required)
+    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
+    def dispatch(self, request, *args, **kwargs):
+        return super(LendingList, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         queryset = Lending.objects.all()
@@ -47,6 +55,11 @@ class AddLending(CreateView):
     template_name = 'lending/add_lending.html'
     form_class = AddLendingForm
 
+    @method_decorator(login_required)
+    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
+    def dispatch(self, request, *args, **kwargs):
+        return super(AddLending, self).dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse('lending-added', args=[self.object.id])
 
@@ -66,11 +79,20 @@ class ViewLending(DetailView):
     model = Lending
     template_name = 'lending/view_lending.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ViewLending, self).dispatch(request, *args, **kwargs)
+
 
 class FinishLending(UpdateView):
     model = Lending
     template_name = 'lending/finish_lending.html'
     form_class = FinishLendingForm
+
+    @method_decorator(login_required)
+    @method_decorator(permission_required('lending.change_lending', raise_exception=True))
+    def dispatch(self, request, *args, **kwargs):
+        return super(FinishLending, self).dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse('view-lending', args=[self.object.id])
@@ -81,12 +103,22 @@ class EditLending(UpdateView):
     template_name = 'lending/edit_lending.html'
     form_class = EditLendingForm
 
+    @method_decorator(login_required)
+    @method_decorator(permission_required('lending.change_lending', raise_exception=True))
+    def dispatch(self, request, *args, **kwargs):
+        return super(EditLending, self).dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse('view-lending', args=[self.object.id])
 
 
 class LendingAdded(TemplateView):
     template_name = "lending/lending_added.html"
+
+    @method_decorator(login_required)
+    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
+    def dispatch(self, request, *args, **kwargs):
+        return super(LendingAdded, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(LendingAdded, self).get_context_data(**kwargs)
@@ -100,6 +132,10 @@ class UsersCurrentLendings(ListView):
     model = Lending
     template_name = "lending/users_current_lendings.html"
     paginate_by = 5
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(UsersCurrentLendings, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         self.user = User.objects.get(id=self.kwargs['user_id'])
@@ -119,6 +155,10 @@ class UsersLendings(ListView):
     template_name = "lending/users_lendings.html"
     paginate_by = 5
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(UsersLendings, self).dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         self.user = User.objects.get(id=self.kwargs['user_id']) 
         return Lending.objects.filter(user=self.user).exclude(end_date=None). \
@@ -135,6 +175,10 @@ class UsersList(ListView):
     template_name = "lending/users.html"
     paginate_by = 10
     queryset = User.objects.order_by('last_name')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(UsersList, self).dispatch(request, *args, **kwargs)
 
 
 

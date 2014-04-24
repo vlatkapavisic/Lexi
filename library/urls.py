@@ -5,7 +5,6 @@ from library.views import *
 
 
 
-
 urlpatterns = patterns ('',
     url(r'^$', BookList.as_view(), name="books"),
     url(r'^author/(?P<pk>\d+)/$', AuthorsBooks.as_view(), name="author"),

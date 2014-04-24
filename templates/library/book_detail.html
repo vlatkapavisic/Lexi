@@ -49,9 +49,11 @@
                 <a href="{% url 'category' object.category.id %}">{{ object.category }}</a></span></p>
             <p>{% trans "Number of items" %}: {{ object.total }}</p>
             <p>{% trans "Number of available items" %}: {{ object.available }}</p>
-            <p><a href="{% url 'add-lending' object.id %}" class="btn btn-default"
-                role="button" {% if object.available = 0 %}disabled="disabled"{% endif %}>
-                {% trans "Lend" %}</a></p>
+            {% if perms.lending.add_lending %}
+                <p><a href="{% url 'add-lending' object.id %}" class="btn btn-default"
+                    role="button" {% if object.available = 0 %}disabled="disabled"{% endif %}>
+                    {% trans "Lend" %}</a></p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

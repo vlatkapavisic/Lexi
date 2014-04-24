@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Login" %}{% endblock %}
+{% block title %}{% trans "Login" %}{% endblock %}
+{% block main_container %}
+
+<div class="row">
+    <div class="col-md-4">
+        {% if form.errors %}
+            <div class="alert alert-danger">{% trans "Your username and password didn't match. Please try again." %}</div>
+        {% endif %}
+        <form role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+        {% csrf_token %}
+        {% for bound_field in form %}
+            <div class="form-group">
+                {{ bound_field.label_tag }}
+                {{ bound_field }}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-default pull-right" value="login">{% trans "Login" %}</button>
+        <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+

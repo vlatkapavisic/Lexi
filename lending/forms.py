@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth.models import User
-from django.forms import ModelForm, DateInput, ModelChoiceField
+from django.forms import ModelForm, DateInput, ModelChoiceField, CharField
 from django.forms.extras.widgets import SelectDateWidget, Select
+from django.forms.widgets import PasswordInput, TextInput
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from lending.models import Lending, BookItem
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 
+
+
+class LexiAuthenticationForm(AuthenticationForm):
+    username = CharField(widget=TextInput(attrs={'class':'form-control'}))
+    password = CharField(widget=PasswordInput(attrs={'class':'form-control'})) 
 
 
 class UserFullNameChoiceField(ModelChoiceField):

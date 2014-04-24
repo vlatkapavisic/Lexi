@@ -13,14 +13,14 @@
     </head>
     <body>
         {% block body %}
-            {% navbar %}
+            {% navbar user perms %}
             <div class="container">
                 <div class="page-header">
                     <h1>{% block title %}{% endblock %}</h1>
                 </div>
                 {% block main_container %}
 
-                {% endblock main_container %}
+                {% endblock %}
             </div>
         {% endblock %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

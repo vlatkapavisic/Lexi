@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block page_title %}{% trans "Logged out" %}{% endblock %}
+{% block title %}{% trans "Logged out" %}{% endblock %}
+{% block main_container %}
+<div class="row">
+    <div class="col-md-6">
+    <div class="alert alert-warning">{% trans "You have been logged out.  You may" %} 
+        <a href="{% url 'login' %}" class="alert-link">{% trans "log back in" %}</a>.</div>
+    </div>
+</div>
+{% endblock %}
+

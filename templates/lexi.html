@@ -15,14 +15,23 @@
     <body>
         <div class="site-wrapper">
             <div class="site-wrapper-inner">
-                {% navbar %}
+                {% if user.is_authenticated %}
+                    {% navbar user perms %}
+                {% endif %}
                 <div class="cover-container">
                     <div class="inner cover">
-                        <h1 class="cover-heading">{% trans "Welcome to Lexi" %}</h1>
+                        <h1 class="cover-heading">
+                            {% if user.is_authenticated %}
+                                {{ user.first_name }}, {% trans "welcome to Lexi." %}</h1>
+                            {% else %}
+                                {% trans "Welcome to Lexi" %}</h1>
+                            {% endif %}
                         <p class="lead">{% trans "Lexi is an app for managing small libraries." %}</p>
-                        <p class="lead">
-                            <a href="{% url 'books' %}" class="btn btn-lg btn-default">{% trans "See available books" %}</a>
-                        </p>
+                        {% if not user.is_authenticated %}
+                            <p class="lead">
+                                <a href="{% url 'login' %}" class="btn btn-lg btn-default">{% trans "Login" %}</a>
+                            </p>
+                        {% endif %}
                     </div>
                 <div class="mastfoot">
                     <div class="inner">
@@ -36,3 +45,5 @@
 
     </body>
 </html>
+
+

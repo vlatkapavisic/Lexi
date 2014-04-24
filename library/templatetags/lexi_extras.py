@@ -71,8 +71,8 @@ def lending_form(form, button_text):
 
 
 @register.inclusion_tag('template_tags/navbar.html')
-def navbar():
-    return {}
+def navbar(user, perms):
+    return {'user':user, 'perms':perms}
 
 
 @register.inclusion_tag('template_tags/simple_search.html', takes_context=True)

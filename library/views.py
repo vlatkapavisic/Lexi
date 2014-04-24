@@ -9,6 +9,9 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView
 from library.forms import BookSearchForm
 from library.models import *
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 
 
@@ -19,11 +22,19 @@ class Home(TemplateView):
 class Readme(TemplateView):
     template_name = 'library/readme.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(Readme, self).dispatch(request, *args, **kwargs)
+
 
 class TagsList(ListView):
     model = Tag
     paginate_by = 10
     template_name = "library/tags.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(TagsList, self).dispatch(request, *args, **kwargs)
 
 
 class CategoriesList(ListView):
@@ -31,11 +42,19 @@ class CategoriesList(ListView):
     paginate_by = 10
     template_name = "library/categories.html"
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CategoriesList, self).dispatch(request, *args, **kwargs)
+
 
 class BookList(ListView):
     model = Book
     paginate_by = 3
     template_name = "library/books.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(BookList, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         queryset = Book.objects.all()
@@ -68,11 +87,19 @@ class BookDetailView(DetailView):
     model = Book
     template_name = "library/book_detail.html"
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(BookDetailView, self).dispatch(request, *args, **kwargs)
+
 
 class AuthorsBooks(ListView):
     model = Book
     template_name = "library/authors_books.html"
     paginate_by = 3
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AuthorsBooks, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         self.author = get_object_or_404(Author, pk=self.kwargs['pk'])
@@ -90,6 +117,10 @@ class PublishersBooks(ListView):
     template_name = "library/publishers_books.html"
     paginate_by = 3
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(PublishersBooks, self).dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         self.publisher = get_object_or_404(Publisher, pk=self.kwargs['pk'])
         return Book.objects.filter(publisher=self.publisher).order_by('-id')
@@ -104,6 +135,10 @@ class TagsBooks(ListView):
     model = Book
     template_name = "library/tags_books.html"
     paginate_by = 3
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(TagsBooks, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         self.tag = get_object_or_404(Tag, pk=self.kwargs['pk'])
@@ -120,6 +155,10 @@ class CategorysBooks(ListView):
     template_name = "library/categorys_books.html"
     paginate_by = 3
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CategorysBooks, self).dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         self.category = get_object_or_404(Category, pk=self.kwargs['pk'])
         return Book.objects.filter(category__name=self.category).order_by('-id')
@@ -134,6 +173,10 @@ class AdvancedSearch(ListView):
     model = Book
     template_name = "library/advanced_search.html"
     paginate_by = 3
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AdvancedSearch, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         self.search_performed = False
