@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth.models import User
-from django.forms import ModelForm, DateInput, ModelChoiceField, CharField
+from django.forms import ModelForm, DateInput, ModelChoiceField, CharField, \
+    HiddenInput, DateField
 from django.forms.extras.widgets import SelectDateWidget, Select
 from django.forms.widgets import PasswordInput, TextInput
 from django.utils import timezone
@@ -35,7 +36,7 @@ class AddLendingForm(ModelForm):
             'start_date': SelectDateWidget(attrs={'class':'form-control'})
         }
 
-    def __init__(self, book, *args, **kwargs):
+    def __init__(self, book, user, *args, **kwargs):
         super(AddLendingForm, self).__init__(*args, **kwargs)
         self.fields['book_item'].queryset = BookItem.objects.filter(
             book=book, borrowed=False)
@@ -43,6 +44,30 @@ class AddLendingForm(ModelForm):
             book=book, borrowed=False).first()
         self.fields['book_item'].empty_label = None
         self.fields['start_date'].initial = timezone.now()
+
+
+class AddLendingToSelfForm(ModelForm):
+    user = UserFullNameChoiceField(label='', queryset=User.objects.order_by('last_name'),
+        widget=HiddenInput)
+
+    class Meta:
+        model = Lending
+        fields = ['user', 'book_item', 'start_date']
+        widgets = {
+            'book_item' : Select(attrs={'class':'form-control'}),
+            'start_date': SelectDateWidget(attrs={'class':'form-control'})
+        }
+
+    def __init__(self, book, user, *args, **kwargs):
+        super(AddLendingToSelfForm, self).__init__(*args, **kwargs)
+        self.fields['user'].initial = user
+        self.fields['start_date'].initial = timezone.now()
+        self.fields['book_item'].queryset = BookItem.objects.filter(
+            book=book, borrowed=False)
+        self.fields['book_item'].initial = BookItem.objects.filter(
+            book=book, borrowed=False).first()
+        self.fields['book_item'].empty_label = None
+
 
 
 class FinishLendingForm(ModelForm):

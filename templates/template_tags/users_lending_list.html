@@ -7,7 +7,9 @@
                     <th>{% trans "Book item" %}</th>
                     <th>{% trans "Start date" %}</th>
                     <th>{% trans "End date" %}</th>
+                    {% if perms.lending.change_lending %}
                     <th></th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -17,11 +19,14 @@
                             {{ lending.book_item }}</a></td>
                         <td>{{ lending.start_date }}</td>
                         <td>{{ lending.end_date|default_if_none:"----" }}</td>
+                        {% if perms.lending.change_lending %}
                         <td>
                             <a href="{% url 'finish-lending' lending.id %}"
                             class="btn btn-default" role="button" 
                             {% if lending.end_date != None %}disabled="disabled"{% endif %}>
-                            {% trans "Finish lending" %}</a></td>
+                            {% trans "Finish lending" %}</a>
+                        </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>

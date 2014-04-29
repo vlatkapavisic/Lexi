@@ -4,10 +4,12 @@
             <div class="panel-body">
                 <form role="form" action="" method="post">{% csrf_token %}
                     {% for bound_field in form %}
-                        <div class="form-group">
-                            {{ bound_field.label_tag }}
-                            {{ bound_field }}
-                        </div>
+                        {% if not bound_field.is_hidden %}
+                            <div class="form-group">
+                                {{ bound_field.label_tag }}
+                                {{ bound_field }}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                     <button type="submit" class="btn btn-default pull-right">{{ button_text }}</button>
                 </form>

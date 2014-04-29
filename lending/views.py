@@ -50,29 +50,30 @@ class LendingList(ListView):
         return context
 
 
-class AddLending(CreateView):
-    model = Lending
-    template_name = 'lending/add_lending.html'
-    form_class = AddLendingForm
+# class AddLending(CreateView):
+#     model = Lending
+#     template_name = 'lending/add_lending.html'
+#     form_class = AddLendingForm
 
-    @method_decorator(login_required)
-    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
-    def dispatch(self, request, *args, **kwargs):
-        return super(AddLending, self).dispatch(request, *args, **kwargs)
+#     @method_decorator(login_required)
+#     @method_decorator(permission_required('lending.add_lending', raise_exception=True))
+#     def dispatch(self, request, *args, **kwargs):
+#         return super(AddLending, self).dispatch(request, *args, **kwargs)
 
-    def get_success_url(self):
-        return reverse('lending-added', args=[self.object.id])
+#     def get_success_url(self):
+#         return reverse('lending-added', args=[self.object.id])
 
-    def get_form_kwargs(self):
-        kwargs = super(AddLending, self).get_form_kwargs()
-        self.book = Book.objects.get(pk=self.kwargs['book_pk'])
-        kwargs['book'] = self.book
-        return kwargs
+#     def get_form_kwargs(self):
+#         kwargs = super(AddLending, self).get_form_kwargs()
+#         self.book = Book.objects.get(pk=self.kwargs['book_pk'])
+#         kwargs['book'] = self.book
+#         kwargs['user'] = self.request.user
+#         return kwargs
 
-    def get_context_data(self, **kwargs):
-        context = super(AddLending, self).get_context_data(**kwargs)
-        context['book'] = self.book
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super(AddLending, self).get_context_data(**kwargs)
+#         context['book'] = self.book
+#         return context
 
 
 class ViewLending(DetailView):
@@ -80,6 +81,7 @@ class ViewLending(DetailView):
     template_name = 'lending/view_lending.html'
 
     @method_decorator(login_required)
+    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(ViewLending, self).dispatch(request, *args, **kwargs)
 
@@ -116,7 +118,6 @@ class LendingAdded(TemplateView):
     template_name = "lending/lending_added.html"
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(LendingAdded, self).dispatch(request, *args, **kwargs)
 
@@ -134,6 +135,7 @@ class UsersCurrentLendings(ListView):
     paginate_by = 5
 
     @method_decorator(login_required)
+    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(UsersCurrentLendings, self).dispatch(request, *args, **kwargs)
 
@@ -156,6 +158,7 @@ class UsersLendings(ListView):
     paginate_by = 5
 
     @method_decorator(login_required)
+    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(UsersLendings, self).dispatch(request, *args, **kwargs)
 
@@ -177,6 +180,7 @@ class UsersList(ListView):
     queryset = User.objects.order_by('last_name')
 
     @method_decorator(login_required)
+    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(UsersList, self).dispatch(request, *args, **kwargs)
 

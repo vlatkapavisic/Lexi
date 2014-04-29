@@ -3,13 +3,13 @@
 {% load static %}
 {% load thumbnail %}
 {% load lexi_extras %}
-{% block page_title %}{{ object.title }}{% endblock %}
-{% block title %}{{ object.title }}{% endblock %}
+{% block page_title %}{{ book.title }}{% endblock %}
+{% block title %}{{ book.title }}{% endblock %}
 {% block main_container %}
     <div class="row">
         <div class="col-md-4">
-            {% if object.cover_image %}
-                {% thumbnail object.cover_image "260x338" as im %}
+            {% if book.cover_image %}
+                {% thumbnail book.cover_image "260x338" as im %}
                     <img src="{{ im.url }}"/>
                 {% endthumbnail %}
             {% else %}
@@ -18,19 +18,19 @@
         </div>
 
         <div class="col-md-6">
-            {% if object.description %}
+            {% if book.description %}
                 <div class="panel panel-default">
                     <div class="panel-body text-muted">
-                        {{ object.description }}
+                        {{ book.description }}
                     </div>
                 </div>
             {% endif %}
             {% trans "Tags" %}:
-            {% for tag in object.tags.all %}
+            {% for tag in book.tags.all %}
                 <span class="label label-info"><a href="{% url 'tag' tag.id %}">{{ tag.name }}</a></span>
             {% endfor %}<p></p>
-            <p>{% trans "Publication year" %}: {{ object.publication_year}}</p>
-            {% if object.authors.all.count > 1 %}
+            <p>{% trans "Publication year" %}: {{ book.publication_year}}</p>
+            {% if book.authors.all.count > 1 %}
                 <p>{% trans "Authors" %}:
             {% else %}
                 <p>{% trans "Author" %}:
@@ -41,19 +41,51 @@
                     {% if not forloop.last %}<span>, </span>{% endif %}
                 {% endfor %}
             {% endspaceless %}</p>
-            <p>{% trans "Publisher" %}: <a href="{{ object.publisher.get_absolute_url }}">
-                {{ object.publisher }}</a></p>
-            <p>ISBN: {{ object.isbn }}</p>
-            <p>{% trans "Language" %}: {{ object.get_language_display }}</p>
+            <p>{% trans "Publisher" %}: <a href="{{ book.publisher.get_absolute_url }}">
+                {{ book.publisher }}</a></p>
+            <p>ISBN: {{ book.isbn }}</p>
+            <p>{% trans "Language" %}: {{ book.get_language_display }}</p>
             <p>{% trans "Category" %}: <span class="label label-warning">
-                <a href="{% url 'category' object.category.id %}">{{ object.category }}</a></span></p>
-            <p>{% trans "Number of items" %}: {{ object.total }}</p>
-            <p>{% trans "Number of available items" %}: {{ object.available }}</p>
-            {% if perms.lending.add_lending %}
-                <p><a href="{% url 'add-lending' object.id %}" class="btn btn-default"
-                    role="button" {% if object.available = 0 %}disabled="disabled"{% endif %}>
-                    {% trans "Lend" %}</a></p>
+                <a href="{% url 'category' book.category.id %}">{{ book.category }}</a></span></p>
+            <p>{% trans "Number of items" %}: {{ book.total }}</p>
+            <p>{% trans "Number of available items" %}: {{ book.available }}</p>
+            {% if perms.lending.add_lending or perms.lending.add_lending_to_self %}
+                <p><button class="btn btn-default" data-toggle="modal" data-target="#myModal"
+                    {% if book.available = 0 %}disabled="disabled"{% endif %}>
+                    {% trans "Lend" %}</button></p>
             {% endif %}
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans "Add lending" %}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <form role="form" action="" method="post">{% csrf_token %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                               
+                                {% for field in form.visible_fields %}
+                                    <div class="form-group">
+                                        {{ field.errors }}
+                                        {{ field.label_tag }} {{ field }}
+                                    </div>
+                                {% endfor %}
+                                <button type="submit" class="btn btn-default pull-right">{% trans "Lend" %}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

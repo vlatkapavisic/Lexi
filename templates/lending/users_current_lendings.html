@@ -12,7 +12,7 @@
             <h3 class="panel-title">{% trans "Current lendings" %}</h3>
         </div>
         <div class="panel-body">
-            {% users_lending_list object_list %}
+            {% users_lending_list object_list perms %}
             {% if is_paginated %}
                 <div class="row">
                     <div class="col-md-12">
@@ -32,7 +32,7 @@
         </div>
         <div class="panel-body">
             {% if past_lendings %}
-                {% users_lending_list past_lendings %}
+                {% users_lending_list past_lendings perms %}
             {% else %}
                 {{ lender.first_name }} {{ lender.last_name }} {% trans "has no ended lendings." %}
             {% endif %}

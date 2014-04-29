@@ -21,16 +21,18 @@
                         </ul>
                     </li>
                     <li><a href="{% url 'advanced-search' %}">{% trans "Advanced search" %}</a></li>
-                    {% if perms.lending %}
+                    {% if perms.lending.add_lending %}
                         <li><a href="{% url 'lendings' %}">{% trans "Lendings" %}</a></li>
                         <li><a href="{% url 'users' %}">{% trans "Users" %}</a></li>
+                    {% endif %}
+                    {% if perms.lending.add_lending_to_self %}
                         <li><a href="{% url 'readme' %}">{% trans "Readme" %}</a></li>
                     {% endif %}
                 </ul>
             {% endif %}
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'users-current-lendings' user.id %}">{{ user.first_name }} {{ user.last_name }}</a></li>
+                    <li><p class="navbar-text">{% trans "Signed in as" %} {{ user.first_name }} {{ user.last_name }}</p></li>
                     <li><a href="{% url 'logout' %}">{% trans "Logout" %}</a></li>
                 {% else %}
                     <li><a href="{% url 'login' %}">{% trans "Login" %}</a></li>

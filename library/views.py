@@ -8,10 +8,13 @@ from django.views.generic import ListView, View, FormView, TemplateView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView
 from library.forms import BookSearchForm
+from lending.forms import AddLendingToSelfForm, AddLendingForm
 from library.models import *
+from lending.models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
+
 
 
 
@@ -83,13 +86,35 @@ class BookList(ListView):
         return context
 
 
-class BookDetailView(DetailView):
-    model = Book
-    template_name = "library/book_detail.html"
+class BookDetailAndLend(CreateView):
+    model = Lending
+    template_name = 'library/book_detail.html'
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(BookDetailView, self).dispatch(request, *args, **kwargs)
+        return super(BookDetailAndLend, self).dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('lending-added', args=[self.object.id])
+
+    def get_form_class(self):
+        if self.request.user.has_perm('lending.add_lending'):
+            form_class = AddLendingForm
+        else:
+            form_class = AddLendingToSelfForm
+        return form_class
+
+    def get_form_kwargs(self):
+        kwargs = super(BookDetailAndLend, self).get_form_kwargs()
+        self.book = Book.objects.get(pk=self.kwargs['pk'])
+        kwargs['book'] = self.book
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(BookDetailAndLend, self).get_context_data(**kwargs)
+        context['book'] = self.book
+        return context
 
 
 class AuthorsBooks(ListView):

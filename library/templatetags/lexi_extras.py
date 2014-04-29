@@ -61,8 +61,8 @@ def century(year):
 
 
 @register.inclusion_tag('template_tags/users_lending_list.html')
-def users_lending_list(object_list):
-    return { 'object_list': object_list }
+def users_lending_list(object_list, perms):
+    return { 'object_list': object_list, 'perms':perms }
 
 
 @register.inclusion_tag('template_tags/lending_form.html')

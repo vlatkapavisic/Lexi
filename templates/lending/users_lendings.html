@@ -12,7 +12,7 @@
             <h3 class="panel-title">{% trans "Past lendings" %}</h3>
         </div>
         <div class="panel-body">
-            {% users_lending_list object_list %}
+            {% users_lending_list object_list perms %}
             {% if is_paginated %}
                 <div class="row">
                     <div class="col-md-12">

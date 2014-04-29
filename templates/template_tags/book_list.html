@@ -17,7 +17,7 @@
                         <th width="130">{% trans "Publication year" %}</th>
                         <th>{% trans "Author(s)" %}</th>
                         <th>{% trans "Publisher" %}</th>
-                        <th width="100">{% trans "Available" %}</th>
+                        <th width="150">{% trans "Available / Total" %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,12 +43,12 @@
                             {% endspaceless %}
                         </td>
                         <td><a href="{{ book.publisher.get_absolute_url }}">{{ book.publisher }}</td>
-                        <td>
-                            <div class="progress progress-striped">
+                        <td>{{ book.available }} / {{ book.total }}
+                            <!--div class="progress progress-striped">
                                 <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{% percentage book.available book.total %}" aria-valuemin="0" aria-valuemax="100" style="width: {% percentage book.available book.total %}%">
                                     {% percentage book.available book.total %}% 
                                 </div>
-                            </div>
+                            </div-->
                         </td>
                     </tr>
                     {% endfor %}

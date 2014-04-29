@@ -63,6 +63,9 @@ class Lending(models.Model):
         verbose_name = _(u"lending")
         verbose_name_plural = _(u"lendings")
         ordering = ['-start_date']
+        permissions = (
+            ("add_lending_to_self", "Can lend a book to him/herself"),
+        )
 
     def __unicode__(self):
         return self.book_title()
