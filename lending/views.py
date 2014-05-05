@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, View, TemplateView, CreateView, \
                                 UpdateView
 from django.views.generic.detail import DetailView
 from lending.models import *
 from lending.forms import AddLendingForm, FinishLendingForm, EditLendingForm
 from library.models import *
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import permission_required
-from django.utils.decorators import method_decorator
-
 
 
 class LendingList(ListView):
@@ -22,7 +21,8 @@ class LendingList(ListView):
     paginate_by = 5
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
+    @method_decorator(permission_required('lending.add_lending', 
+        raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(LendingList, self).dispatch(request, *args, **kwargs)
 
@@ -32,8 +32,8 @@ class LendingList(ListView):
         self.search_term = self.request.GET.get('search')
         if self.search_term:
             self.search_performed = True
-            return queryset.filter \
-                (Q(book_item__book__title__icontains=self.search_term)|
+            return queryset.filter(
+                Q(book_item__book__title__icontains=self.search_term)|
                 Q(user__first_name__icontains=self.search_term)|
                 Q(user__last_name__icontains=self.search_term)).distinct()
         return queryset.order_by('-start_date')
@@ -50,38 +50,13 @@ class LendingList(ListView):
         return context
 
 
-# class AddLending(CreateView):
-#     model = Lending
-#     template_name = 'lending/add_lending.html'
-#     form_class = AddLendingForm
-
-#     @method_decorator(login_required)
-#     @method_decorator(permission_required('lending.add_lending', raise_exception=True))
-#     def dispatch(self, request, *args, **kwargs):
-#         return super(AddLending, self).dispatch(request, *args, **kwargs)
-
-#     def get_success_url(self):
-#         return reverse('lending-added', args=[self.object.id])
-
-#     def get_form_kwargs(self):
-#         kwargs = super(AddLending, self).get_form_kwargs()
-#         self.book = Book.objects.get(pk=self.kwargs['book_pk'])
-#         kwargs['book'] = self.book
-#         kwargs['user'] = self.request.user
-#         return kwargs
-
-#     def get_context_data(self, **kwargs):
-#         context = super(AddLending, self).get_context_data(**kwargs)
-#         context['book'] = self.book
-#         return context
-
-
 class ViewLending(DetailView):
     model = Lending
     template_name = 'lending/view_lending.html'
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
+    @method_decorator(permission_required('lending.add_lending', 
+        raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(ViewLending, self).dispatch(request, *args, **kwargs)
 
@@ -92,12 +67,13 @@ class FinishLending(UpdateView):
     form_class = FinishLendingForm
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('lending.change_lending', raise_exception=True))
+    @method_decorator(permission_required('lending.change_lending', 
+        raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(FinishLending, self).dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse('view-lending', args=[self.object.id])
+        return reverse('lendings')
 
 
 class EditLending(UpdateView):
@@ -106,12 +82,13 @@ class EditLending(UpdateView):
     form_class = EditLendingForm
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('lending.change_lending', raise_exception=True))
+    @method_decorator(permission_required('lending.change_lending', 
+        raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(EditLending, self).dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse('view-lending', args=[self.object.id])
+        return reverse('lendings')
 
 
 class LendingAdded(TemplateView):
@@ -135,7 +112,8 @@ class UsersCurrentLendings(ListView):
     paginate_by = 5
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
+    @method_decorator(permission_required('lending.add_lending', 
+        raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(UsersCurrentLendings, self).dispatch(request, *args, **kwargs)
 
@@ -158,7 +136,8 @@ class UsersLendings(ListView):
     paginate_by = 5
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
+    @method_decorator(permission_required('lending.add_lending', 
+        raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(UsersLendings, self).dispatch(request, *args, **kwargs)
 
@@ -180,7 +159,8 @@ class UsersList(ListView):
     queryset = User.objects.order_by('last_name')
 
     @method_decorator(login_required)
-    @method_decorator(permission_required('lending.add_lending', raise_exception=True))
+    @method_decorator(permission_required('lending.add_lending', 
+        raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(UsersList, self).dispatch(request, *args, **kwargs)
 

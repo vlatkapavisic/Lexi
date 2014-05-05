@@ -9,7 +9,6 @@ from lending.models import *
 from library.models import *
 
 
-
 class BookItemAdmin(admin.ModelAdmin):
 	list_display = ('item_id','book','borrowed','borrowed_by')
 	list_filter = ('borrowed','book')
@@ -31,7 +30,8 @@ class LendingAdminForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(LendingAdminForm, self).__init__(*args, **kwargs)
 		if not self.instance.pk: 
-			self.fields['book_item'].queryset = BookItem.objects.filter(borrowed=False)
+			self.fields['book_item'].queryset = BookItem.objects. \
+			filter(borrowed=False)
 
 
 class LendingAdmin(admin.ModelAdmin):

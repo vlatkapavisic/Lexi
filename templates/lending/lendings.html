@@ -28,7 +28,7 @@
                         </thead>
                         <tbody>
                             {% for lending in object_list %}
-                                <tr {% if lending.end_date == None %}class="danger"{% endif %}>
+                                <tr {% if lending.end_date == None %}class="info"{% endif %}>
                                     <td><a href="{% url 'view-lending' lending.id %}">
                                     {{ lending.book_item }}</a></td>
                                     <td><a href="{% url 'users-current-lendings' lending.user.id %}">

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 from django.contrib.auth.models import User
 from django.forms import ModelForm, DateInput, ModelChoiceField, CharField, \
     HiddenInput, DateField
@@ -8,9 +10,6 @@ from django.forms.widgets import PasswordInput, TextInput
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from lending.models import Lending, BookItem
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm
-
 
 
 class LexiAuthenticationForm(AuthenticationForm):
@@ -36,7 +35,7 @@ class AddLendingForm(ModelForm):
             'start_date': SelectDateWidget(attrs={'class':'form-control'})
         }
 
-    def __init__(self, book, user, *args, **kwargs):
+    def __init__(self, book, *args, **kwargs):
         super(AddLendingForm, self).__init__(*args, **kwargs)
         self.fields['book_item'].queryset = BookItem.objects.filter(
             book=book, borrowed=False)
@@ -47,21 +46,15 @@ class AddLendingForm(ModelForm):
 
 
 class AddLendingToSelfForm(ModelForm):
-    user = UserFullNameChoiceField(label='', queryset=User.objects.order_by('last_name'),
-        widget=HiddenInput)
-
     class Meta:
         model = Lending
-        fields = ['user', 'book_item', 'start_date']
+        fields = ['book_item']
         widgets = {
             'book_item' : Select(attrs={'class':'form-control'}),
-            'start_date': SelectDateWidget(attrs={'class':'form-control'})
         }
 
-    def __init__(self, book, user, *args, **kwargs):
+    def __init__(self, book, *args, **kwargs):
         super(AddLendingToSelfForm, self).__init__(*args, **kwargs)
-        self.fields['user'].initial = user
-        self.fields['start_date'].initial = timezone.now()
         self.fields['book_item'].queryset = BookItem.objects.filter(
             book=book, borrowed=False)
         self.fields['book_item'].initial = BookItem.objects.filter(

@@ -17,7 +17,8 @@ urlpatterns = patterns('',
     url(r'^books/', include('library.urls')),
     url(r'^lendings/', include('lending.urls')),
     url(r'^users/$', UsersList.as_view(), name="users"),
-    url(r'^login/$', 'django.contrib.auth.views.login', {'authentication_form': LexiAuthenticationForm}, name = "login" ),
+    url(r'^login/$', 'django.contrib.auth.views.login', 
+        {'authentication_form': LexiAuthenticationForm}, name = "login" ),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name = "logout"),
 ) 
 

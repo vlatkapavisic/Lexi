@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.utils import timezone
 from django.views.generic import ListView, View, FormView, TemplateView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView
@@ -11,15 +15,10 @@ from library.forms import BookSearchForm
 from lending.forms import AddLendingToSelfForm, AddLendingForm
 from library.models import *
 from lending.models import *
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import permission_required
-from django.utils.decorators import method_decorator
-
-
 
 
 class Home(TemplateView):
-    template_name = 'lexi.html'
+    template_name = 'library/welcome.html'
 
 
 class Readme(TemplateView):
@@ -99,8 +98,10 @@ class BookDetailAndLend(CreateView):
 
     def get_form_class(self):
         if self.request.user.has_perm('lending.add_lending'):
+            self.lending_type = 'librarian'
             form_class = AddLendingForm
         else:
+            self.lending_type = 'trusted-employee'
             form_class = AddLendingToSelfForm
         return form_class
 
@@ -108,13 +109,18 @@ class BookDetailAndLend(CreateView):
         kwargs = super(BookDetailAndLend, self).get_form_kwargs()
         self.book = Book.objects.get(pk=self.kwargs['pk'])
         kwargs['book'] = self.book
-        kwargs['user'] = self.request.user
         return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(BookDetailAndLend, self).get_context_data(**kwargs)
         context['book'] = self.book
         return context
+
+    def form_valid(self, form):
+        if self.lending_type == 'trusted-employee':
+            form.instance.user = self.request.user
+            form.instance.start_date = timezone.now()
+        return super(BookDetailAndLend, self).form_valid(form)
 
 
 class AuthorsBooks(ListView):
@@ -128,8 +134,7 @@ class AuthorsBooks(ListView):
 
     def get_queryset(self):
         self.author = get_object_or_404(Author, pk=self.kwargs['pk'])
-        return Author.objects.get(pk=self.kwargs['pk']).books.all(). \
-            order_by('-id')
+        return Author.objects.get(pk=self.kwargs['pk']).books.order_by('-id')
 
     def get_context_data(self, **kwargs):
         context = super(AuthorsBooks, self).get_context_data(**kwargs)

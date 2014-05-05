@@ -5,9 +5,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 
 
-
 __all__ = ('Author', 'Publisher', 'Category', 'Tag', 'Book')
-
 
 
 class Author(models.Model):
@@ -24,7 +22,7 @@ class Author(models.Model):
         return self.name 
 
     def save(self, *args, **kwargs):
-        self.name = self.first_name+" "+self.last_name
+        self.name = self.first_name + " " + self.last_name
         super(Author, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

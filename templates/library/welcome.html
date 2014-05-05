@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load lexi_extras %}
+{% block page_title %}{% trans "Welcome" %}{% endblock %}
+{% block main_container %}
+    <div class="jumbotron">
+        <h1>
+            {% if user.is_authenticated %}
+                {{ user.first_name }}, {% trans "welcome to Lexi." %}
+            {% else %}
+                {% trans "Welcome to Lexi" %}
+            {% endif %}
+        </h1>
+        <p>{% trans "Lexi is an app for managing small libraries." %}</p>
+        {% if not user.is_authenticated %}
+            <p><a href="{% url 'login' %}" class="btn btn-lg btn-default">{% trans "Login" %}</a></p>
+        {% endif %}
+    </div>
+{% endblock %}

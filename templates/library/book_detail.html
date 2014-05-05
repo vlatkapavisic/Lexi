@@ -69,19 +69,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3">
-                            <form role="form" action="" method="post">{% csrf_token %}
-                                {% for hidden in form.hidden_fields %}
-                                    {{ hidden }}
-                                {% endfor %}
-                               
-                                {% for field in form.visible_fields %}
-                                    <div class="form-group">
-                                        {{ field.errors }}
-                                        {{ field.label_tag }} {{ field }}
-                                    </div>
-                                {% endfor %}
-                                <button type="submit" class="btn btn-default pull-right">{% trans "Lend" %}</button>
-                            </form>
+                            {% trans "Add lending" as button_text %}
+                            {% lending_form form button_text %}
                         </div>
                     </div>
                 </div>

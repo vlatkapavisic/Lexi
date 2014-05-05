@@ -41,8 +41,8 @@ def pagination(page_obj, queries={}):
     elif start == last:
         start -= 2
     pagination_range = range(start, start + 3)
-    return { 'page_obj': page_obj,'queries': queries, 'pagination_range': pagination_range,
-        'last': last }
+    return { 'page_obj': page_obj,'queries': queries, 'pagination_range': 
+        pagination_range, 'last': last }
 
 
 @register.inclusion_tag('template_tags/book_list.html')

@@ -10,7 +10,6 @@ from django.utils import timezone
 from library.models import Book
 
 
-
 __all__ = ('BookItem', 'Lending')
     
 
@@ -34,7 +33,7 @@ class BookItem(models.Model):
         if self.pk is None:  
             try:
                 latest_item = BookItem.objects.filter(book=self.book). \
-                    order_by('-item_id').first()
+                    latest('item_id')
                 self.item_id = latest_item.item_id + 1
             except:
                 self.item_id = 1
@@ -45,7 +44,7 @@ class BookItem(models.Model):
 
     def borrowed_by(self):
         if self.borrowed:
-            lending = Lending.objects.filter(book_item=self).first()
+            lending = Lending.objects.filter(book_item=self).latest('start_date')
             return lending.user.first_name + " " + lending.user.last_name
         else:
             return ""
@@ -85,7 +84,7 @@ class Lending(models.Model):
         return self.book_item.book.title
 
     def borrowed_by(self):
-        return self.user.first_name + " " + self.user.last_name
+        return self.user.name
    
 
 @receiver(pre_delete, sender=Lending)
