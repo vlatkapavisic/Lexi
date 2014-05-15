@@ -27,7 +27,7 @@
             {% endif %}
             {% trans "Tags" %}:
             {% for tag in book.tags.all %}
-                <span class="label label-info"><a href="{% url 'tag' tag.id %}">{{ tag.name }}</a></span>
+                <span class="label label-info"><a href="{% url 'tag' tag.id %}" id="tag-label-link">{{ tag.name }}</a></span>
             {% endfor %}<p></p>
             <p>{% trans "Publication year" %}: {{ book.publication_year}}</p>
             {% if book.authors.all.count > 1 %}
@@ -46,7 +46,7 @@
             <p>ISBN: {{ book.isbn }}</p>
             <p>{% trans "Language" %}: {{ book.get_language_display }}</p>
             <p>{% trans "Category" %}: <span class="label label-warning">
-                <a href="{% url 'category' book.category.id %}">{{ book.category }}</a></span></p>
+                <a href="{% url 'category' book.category.id %}" id="category-label-link">{{ book.category }}</a></span></p>
             <p>{% trans "Number of items" %}: {{ book.total }}</p>
             <p>{% trans "Number of available items" %}: {{ book.available }}</p>
             {% if perms.lending.add_lending or perms.lending.add_lending_to_self %}

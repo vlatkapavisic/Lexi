@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" onmouseover="mouseInNavbar(this)" onmouseout="mouseOutNavbar(this)">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -41,3 +41,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    function mouseInNavbar(obj){
+        obj.style.backgroundColor = "#606060";
+    }
+    function mouseOutNavbar(obj){
+        obj.style.backgroundColor = "black";
+    }
+</script>
