@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext as _
@@ -124,5 +125,7 @@ class Book(models.Model):
     def available(self):
         from lending.models import BookItem
         return BookItem.objects.all().filter(book=self, borrowed=False).count()
+
+
 
 

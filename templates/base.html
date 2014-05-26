@@ -10,8 +10,10 @@
         <title>Lexi | {% block page_title %}{% endblock %}</title>
         <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
         <link href="{% static 'css/lexi-style.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
         <link href="{% static 'images/icon.png' %}" rel="icon" type="image/x-icon" />
-    </head>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>    </head>
     <body>
         {% block body %}
             {% navbar user perms %}
@@ -31,7 +33,7 @@
                 <p class="text-muted">&copy; Styria 2014.</p>
             </div>
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+                <!--script src="{% static 'js/jquery-2.1.1.min.js' %}"></script-->
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
     </body>
 </html>

@@ -32,7 +32,7 @@
                                 <img src="{% static 'images/noimage.jpg' %}" width="50" height="65"/>
                             {% endif %}
                         </td>
-                        <td><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></td>
+                        <td><a href="{{ book.get_absolute_url }}" {% if book.description %}data-toggle="tooltip" data-placement="right" title="{{ book.description }}"{% endif %}>{{ book.title }}</a></td>
                         <td>{{ book.publication_year }}</td>
                         <td>
                             {% spaceless %}
@@ -59,3 +59,11 @@
         {% endif %}
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        $("tr").on("mouseover", function(){
+            $(this).find("img").effect("pulsate", 500);
+        });
+    });
+</script>

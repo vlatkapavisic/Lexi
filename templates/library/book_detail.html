@@ -25,10 +25,10 @@
                     </div>
                 </div>
             {% endif %}
-            {% trans "Tags" %}:
+            <p>{% trans "Tags" %}:
             {% for tag in book.tags.all %}
                 <span class="label label-info"><a href="{% url 'tag' tag.id %}" id="tag-label-link">{{ tag.name }}</a></span>
-            {% endfor %}<p></p>
+            {% endfor %}</p><p></p>
             <p>{% trans "Publication year" %}: {{ book.publication_year}}</p>
             {% if book.authors.all.count > 1 %}
                 <p>{% trans "Authors" %}:
@@ -50,9 +50,9 @@
             <p>{% trans "Number of items" %}: {{ book.total }}</p>
             <p>{% trans "Number of available items" %}: {{ book.available }}</p>
             {% if perms.lending.add_lending or perms.lending.add_lending_to_self %}
-                <p><button class="btn btn-default" data-toggle="modal" data-target="#myModal"
+                <p></p><button class="btn btn-default" data-toggle="modal" data-target="#myModal"
                     {% if book.available = 0 %}disabled="disabled"{% endif %}>
-                    {% trans "Lend" %}</button></p>
+                    {% trans "Lend" %}</button>
             {% endif %}
 
         </div>
@@ -77,4 +77,23 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            $(".label-info, .label-warning").hover(
+                function(){
+                    $(this).fadeTo(100, 0.3);
+                    $(this).fadeTo(100, 1);
+            });
+            $("img").on("mouseover", function(){
+                $(this).effect("shake", 1000);
+            });
+            $("p").on("mouseover", function(){
+                $(this).css("background-color", "#FCE7E7");
+            });
+            $("p").on("mouseout", function(){
+                $(this).css("background-color", "");
+            });
+        });
+    </script>
 {% endblock %}
+

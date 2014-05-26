@@ -11,13 +11,22 @@
             <div class="row">
                 {% for bound_field in form %}
                     <div class="col-md-2">
-                        <input name="{{ bound_field.name }}" type="text" class="form-control" id="{{ bound_field.auto_id }}" {% if bound_field.value %}value="{{ bound_field.value }}"{% endif %}{% if bound_field.field.max_length %} maxlength="{{ bound_field.field.max_length }}"{% endif %}>
+                        <input name="{{ bound_field.name }}" type="text" class="form-control" id="{{ bound_field.auto_id }}" {% if bound_field.value %}value="{{ bound_field.value }}"{% endif %}{% if bound_field.field.max_length %} maxlength="{{ bound_field.field.max_length }}"{% endif %} {% if bound_field.help_text %}data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="{{ bound_field.help_text }}"{% endif %}>
                     </div>
                 {% endfor %}
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></button>
                 </div>
             </div>
+            <div class="row" id="jquery-help-text"></div>
         </form>
+        <p id="lala"></p>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        $("[data-toggle='tooltip']").tooltip();
+    });
+
+</script>

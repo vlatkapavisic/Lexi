@@ -108,6 +108,13 @@ a{
   border-top-right-radius: 0;
 }
 
+#hidden-help-text{
+  display: none;
+}
+
+#jquery-help-text{
+  display: none;
+}
 
 
 
