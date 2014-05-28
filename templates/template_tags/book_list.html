@@ -63,7 +63,7 @@
 <script>
     $(document).ready(function(){
         $("tr").on("mouseover", function(){
-            $(this).find("img").effect("pulsate", 500);
+            $(this).find("img").effect("shake", { times: 1, distance: 5 }, 20);
         });
     });
 </script>

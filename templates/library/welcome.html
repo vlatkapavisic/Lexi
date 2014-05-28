@@ -20,10 +20,11 @@
             <p><a href="{% url 'login' %}" class="btn btn-lg btn-default special-button">{% trans "Login" %}</a></p>
         {% endif %}
     </div>
+    <script>
+        $(document).ready(function(){
+            var jumboHeight = $(window).height() - 225;
+            $(".jumbotron").height(jumboHeight);
+        });
+    </script>
 {% endblock %}
 
-<script>
-    $(document).ready(function(){
-        $("h1").slideToggle("slow");
-    });
-</script>
