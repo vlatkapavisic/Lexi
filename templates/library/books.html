@@ -5,7 +5,7 @@
 {% load thumbnail %}
 {% load lexi_extras %}
 {% block page_title %}{% trans "Books" %}{% endblock %}
-{% block title %}{% trans "Books" %}{% endblock %}
+{% block title %}{% trans "Books" %} <button class="btn btn-default" id="high-available">Highlight available</button>{% endblock %}
 {% block main_container %}
     <ul class="nav nav-tabs">
         <li class="active"><a href="#books" data-toggle="tab">{% trans "Books" %}</a></li>
@@ -36,4 +36,11 @@
             {% endif %}
         </div>
     </div>  
+    <script>
+        $(document).ready(function(){
+            $("button#high-available").on("click", function(){
+                $("tr").not("tr:first").not("tr:contains('0 /')").css("background-color", "#F9CACA");
+            });
+        });
+    </script>
 {% endblock %}

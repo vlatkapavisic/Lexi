@@ -20,11 +20,18 @@
             <p><a href="{% url 'login' %}" class="btn btn-lg btn-default special-button">{% trans "Login" %}</a></p>
         {% endif %}
     </div>
+    <div id="tagovi"></div>
+    <div id="results"></div>
     <script>
         $(document).ready(function(){
             var jumboHeight = $(window).height() - 225;
             $(".jumbotron").height(jumboHeight);
         });
+        /*$.get("{% url 'tags' %}", function(resp){console.log(resp);});
+        $("#tagovi").load("{% url 'tags' %} .row", function(){alert("Done fetching tags!");});
+        $.get("http://en.wikipedia.org/wiki/JSONP", function(data){
+            console.log(data);
+        });*/
     </script>
 {% endblock %}
 

@@ -33,11 +33,12 @@ body {
 }
 
 .jumbotron>h1{
-  text-shadow: black 0.1em 0.1em 0.1em;
+  text-shadow: 5px 5px 10px black;
 }
 
 #search-panel{
   background-color: #E8E8E8;
+  padding-left: 2em;
 }
 
 a{
