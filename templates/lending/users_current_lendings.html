@@ -7,6 +7,14 @@
 {% block page_title %}{{ lender.first_name }} {{ lender.last_name }}{% endblock %}
 {% block title %}{{ lender.first_name }} {{ lender.last_name }}{% endblock %}
 {% block main_container %}
+    <button type="button" class="btn btn-default" id="stat-btn">{% trans "Show statistics" %}</button>
+    <br><br>
+    <div class="panel panel-default" id="stat-panel">
+        <div class="panel-body">
+            {% trans "This user has joined Lexi on" %} {{ lender.date_joined }} {% trans "and has" %} {{ lender.lending_set.all|length }} {% trans "lendings alltogether." %}
+        </div>
+    </div>
+    <br>
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">{% trans "Current lendings" %}</h3>
@@ -25,17 +33,29 @@
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">
-                {% trans "Past lendings" %}&nbsp;&nbsp;<a href="{% url 'users-past-lendings' lender.id %}"
-                class="btn btn-info" role="button"
-                {% if not past_lendings %}disabled="disabled"{% endif %}>{% trans "View all" %}</a>
+                {% trans "Past lendings" %}
             </h3>
         </div>
         <div class="panel-body">
             {% if past_lendings %}
                 {% users_lending_list past_lendings perms %}
+                <a href="{% url 'users-past-lendings' lender.id %}"
+                class="btn btn-info pull-right" role="button">{% trans "View all" %}</a>
             {% else %}
                 {{ lender.first_name }} {{ lender.last_name }} {% trans "has no ended lendings." %}
             {% endif %}
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            $("#stat-btn").on("click", function(){
+                $("#stat-panel").slideToggle();
+                if($(this).text() === "Show statistics"){
+                    $(this).text("Hide statistics");
+                }else{
+                    $(this).text("Show statistics");
+                }
+            });
+        });
+    </script>
 {% endblock %}

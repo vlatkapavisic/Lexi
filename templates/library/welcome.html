@@ -28,10 +28,20 @@
             $(".jumbotron").height(jumboHeight);
         });
         /*$.get("{% url 'tags' %}", function(resp){console.log(resp);});
-        $("#tagovi").load("{% url 'tags' %} .row", function(){alert("Done fetching tags!");});
-        $.get("http://en.wikipedia.org/wiki/JSONP", function(data){
-            console.log(data);
-        });*/
+        $("#tagovi").load("{% url 'tags' %} .row", function(){alert("Done fetching tags!");});*/
+        $.ajax({
+            url: "{% url 'categories' %}",
+            beforeSend: function(){ 
+                console.log("Prije slanja"); 
+            },
+            success: function(data){
+                console.log("Primljeni podaci: " + data);
+            },
+            type: 'GET',
+            complete: function(){
+                console.log("Završeno.");
+            }
+        });
     </script>
 {% endblock %}
 

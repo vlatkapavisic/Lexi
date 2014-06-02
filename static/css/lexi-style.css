@@ -116,6 +116,11 @@ a{
   display: none;
 }
 
+#stat-panel{
+  display: none;
+  width: 40em;
+}
+
 
 
 
