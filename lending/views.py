@@ -18,7 +18,7 @@ from library.models import *
 class LendingList(ListView):
     model = Lending
     template_name = 'lending/lendings.html'
-    paginate_by = 5
+    paginate_by = 10
 
     @method_decorator(login_required)
     @method_decorator(permission_required('lending.add_lending', 

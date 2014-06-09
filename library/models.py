@@ -127,5 +127,18 @@ class Book(models.Model):
         return BookItem.objects.all().filter(book=self, borrowed=False).count()
 
 
+# class Wish(models.Model):
+#     title = models.CharField(verbose_name=_(u"title"), max_length=200)
+#     authors = models.CharField(verbose_name=_(u"authors"), max_length=200)
+#     posted_by = models.ForeignKey(User)
+#     date_added = models.DateField(verbose_name=_(u"date_added")) 
+#     fullfilled = models.BooleanField(default=False, verbose_name=_(u"fullfilled"))
 
+#     class Meta:
+#         verbose_name = _(u"wish")
+#         verbose_name_plural = _(u"wishes")
+#         ordering = ['date_added']
+
+#     def __unicode__(self):
+#         return self.title
 

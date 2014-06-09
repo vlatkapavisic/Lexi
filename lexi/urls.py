@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^users/$', UsersList.as_view(), name="users"),
     url(r'^login/$', 'django.contrib.auth.views.login', 
         {'authentication_form': LexiAuthenticationForm}, name = "login" ),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', name = "logout"),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', { 'next_page' : 'home' }, name = "logout"),
 ) 
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

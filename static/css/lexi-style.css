@@ -25,11 +25,13 @@ body {
 .special-button{
 	background-color: #EEA9B8;
 	border-color: #CD919E;
+  color: #6B0024;
 }
 
 .special-button:hover{
 	background-color: #FFC0CB;
 	border-color: #CD919E;
+  color: #6B0024;
 }
 
 .jumbotron>h1{
@@ -42,15 +44,19 @@ body {
 }
 
 a{
-  color:#F08080;
+  color: #F08080;
+}
+
+a:hover{
+  color: #A85A5A;
 }
 
 #tag-label-link{
-  color:#0066CC;
+  color: #0066CC;
 }
 
 #category-label-link{
-  color:#FF6600;
+  color: #FF6600;
 }
 
 /* Sticky footer styles
@@ -121,6 +127,15 @@ a{
   width: 40em;
 }
 
+#len-form{
+  display: none;
+}
+
+input:focus, input[type]:focus{
+  border-color: #949494;
+  box-shadow: 0 0 2px 2px #B2B2B2;
+  outline: 0 none;
+}
 
 
 

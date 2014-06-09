@@ -51,7 +51,7 @@ class CategoriesList(ListView):
 
 class BookList(ListView):
     model = Book
-    paginate_by = 3
+    paginate_by = 10
     template_name = "library/books.html"
 
     @method_decorator(login_required)
@@ -126,7 +126,7 @@ class BookDetailAndLend(CreateView):
 class AuthorsBooks(ListView):
     model = Book
     template_name = "library/authors_books.html"
-    paginate_by = 3
+    paginate_by = 10
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
