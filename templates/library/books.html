@@ -39,7 +39,7 @@
     <script>
         $(document).ready(function(){
             $("button#high-available").on("click", function(){
-                $("tr").not("tr:first").not("tr:contains('0 /')").css("background-color", "#F9CACA");
+                $("tr").not("#table-header").not("tr:contains('0 /')").toggleClass("hilite");
             });
         });
     </script>
